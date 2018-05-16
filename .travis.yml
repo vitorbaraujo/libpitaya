@@ -17,11 +17,11 @@ before_deploy:
 deploy:
   provider: releases
   draft: true
-  tag_name: $TRAVIS_TAG
+  #tag_name: $TRAVIS_TAG
   api_key:
     secure: UrhKrI4K9DcKVXNyWURye1BuX2PxPpFoLzdZHDOQeNL69Mudg7vlNX3nfIG8lYtofeuEf9ZLIFH8cOMf3Wawmdqpa1MKmpitgTDIT63RBPFWxUYvKu//1sAAz2x394giKr/E+3O03zkiT6/qYLdZjT9Sz/cM3IzabvtU5xaa3PZkdWv7ZDk14yj/4YTcGyrKSSZLHxygigFtR9w3tySCHh+vBae/OTP2wLak3tWvD7UtaQoxoPXGv+kWgHaLvDsb2tX5vVOANJqxMSDlukFOnRXgDyUY82SzVbc1F26lmHKt0c0lTjxPxUXaL9JEAsLe0RX15WiOKjEPSNd4P+4vnXO2J8bvM9d6e0GGYN+HQBguwfkshsiPzT3mEO0tEyfE9SEUx0XBcZ4D90RbUq6Icb1B/Kebz1npyDaSyNP482nB34iOJVdg67WOE81puDhBzyV/NmUB9Fcp+p0y8vIO/XE33pCaxM4w0HsiBQlUUMw6t4WksfIJM0xa/7qZvDcmfqi2c15PMmCp/39VQZYHDY2ou50yvOVFST0zVMzxiWR7T6i2OYYdVR+y7Cm9oKXvG9BE8r1xkTVFzhIXC4lcn0IoKOwDNi1RRq9i1QNyF2mkolnIYqM1Au6eyiF5X1dns1f5Dzf32WHhN5SimGG0HoE4nnJTFjjBqEXkmqAbUD4=
   file_glob: true
-  file: libpomelo2.a
+  file: build/output/*
   skip_cleanup: true
   on:
     repo: topfreegames/libpitaya

@@ -223,7 +223,7 @@
           'dependencies': [
             'libpomelo2',
           ],
-          conditions: [
+          'conditions': [
             ['OS!="win"', {
                 'cflags': [
                     '-fPIC'

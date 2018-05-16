@@ -12,13 +12,8 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-      # install:
-      #   - mkdir .tmp
-      #   - curl -L https://github.com/ninja-build/ninja/releases/download/v1.7.2/ninja-linux.zip -o .tmp/ninja-linux.zip
-      #   - unzip .tmp/ninja-linux.zip -d .tmp
-      before_script:
-        # - export PATH=$PATH:$PWD/.tmp
-        - make gyp-linux
+      install: make install-gyp
+      before_script: make gyp-linux
       deploy:
         provider: releases
         draft: true

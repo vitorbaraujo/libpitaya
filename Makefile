@@ -5,6 +5,8 @@ setup-go:
 	@~/gimme 1.10.2
 	@echo Go installed version $(shell go version)
 	@~/.gimme/versions/go1.10.2.linux.amd64/bin/go version
+	@echo WHERE IS GO
+	@whereis go
 
 setup-node:
 	@curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash

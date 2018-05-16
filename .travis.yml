@@ -1,5 +1,8 @@
 language: c
 compiler: clang
+os:
+  - linux
+  - osx
 install: make setup-ci
 script: make build
 sudo: required

@@ -2,7 +2,7 @@ setup-go:
 	@curl -sL -o ~/gimme https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
 	@chmod +x ~/gimme
 	@~/gimme 1.10.2
-	@ Go installed version $(shell go version)
+	@echo Go installed version $(shell go version)
 
 setup-node:
 	@curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash

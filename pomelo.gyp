@@ -117,6 +117,7 @@
         'conditions': [
           ['OS != "win"', {
             'defines': ['_GNU_SOURCE'],
+            'cflags': ['-fPIC'],
           }, {
             'defines': [
               '_CRT_SECURE_NO_WARNINGS',

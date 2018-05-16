@@ -17,7 +17,7 @@ setup-ci: setup-gyp setup-node setup-go
 .PHONY: build
 
 test-deps:
-	cd test/server && go get
+	@-(cd test/server && go get)
 
 build:
 	cd build && make

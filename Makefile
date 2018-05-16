@@ -1,9 +1,7 @@
 setup-go:
 	@sudo rm -rf ~/.gimme
-	@GIMME_OUTPUT="$(shell gimme 1.10.2 | tee -a ${HOME}/.bashrc)" && eval "${GIMME_OUTPUT}"
-	@which go
+	@gimme 1.10.2
 	@echo Go installed version $(shell go version)
-	which go
 
 setup-node:
 	@curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
@@ -13,12 +11,12 @@ setup-gyp:
 	@git clone https://chromium.googlesource.com/external/gyp.git ~/gyp
 	@cd ~/gyp && sudo python setup.py install
 
-setup-ci: setup-gyp setup-node setup-go
+setup-ci: setup-gyp
 	@gyp --depth=. pomelo.gyp -f make --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false
 
 .PHONY: build
 
-test-deps:
+test-deps: setup-node setup-go
 	@-(cd test/server && go get)
 
 build:

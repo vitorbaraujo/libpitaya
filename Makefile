@@ -12,7 +12,7 @@ setup-gyp:
 	@cd ~/gyp && sudo python setup.py install
 
 setup-ci: setup-gyp
-	@gyp --depth=. pomelo.gyp -f make --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false
+	@gyp --depth=. pomelo.gyp -f make --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false -Dbuild_cspomelo=true
 
 .PHONY: build
 

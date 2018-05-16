@@ -5,7 +5,7 @@ setup-go:
 
 setup-node:
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-	source ~/.nvm/nvm.sh && nvm install 10.0.0
+	. ~/.nvm/nvm.sh && nvm install 10.0.0
 
 setup-gyp:
 	@git clone https://chromium.googlesource.com/external/gyp.git ~/gyp

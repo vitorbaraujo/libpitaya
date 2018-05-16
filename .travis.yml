@@ -1,10 +1,9 @@
 language: c
 compiler: clang
-go:
-- 1.9.2
-os:
-- linux
-- osx
+
+# go:
+# - 1.9.2
+
 matrix:
   include:
     - os: linux
@@ -13,20 +12,28 @@ matrix:
     - os: osx
       osx_image: xcode9
       sudo: required
+
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install go          ; fi
+  #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget https://dl.google.com/go/go1.10.1.linux-amd64.tar.gz ; fi
+
 install: make setup-ci
+
 script:
-- if [[ -n $TRAVIS_TAG ]]; then echo "travis tag is $TRAVIS_TAG"; fi
-- make build
+  - make build
+
 after_script:
-  - ls ${TRAVIS_BUILD}/build/output
+  - ls build/output
+
 addons:
   apt:
     update: true
+
 before_deploy:
 - git config --local user.name "Travis Bot"
 - git config --local user.email "<>"
+
 deploy:
   provider: releases
   draft: true
@@ -37,5 +44,4 @@ deploy:
   file: build/output/*
   on:
     repo: topfreegames/libpitaya
-    #branch: travis-integration
     tags: true

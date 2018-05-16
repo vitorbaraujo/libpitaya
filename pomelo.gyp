@@ -223,6 +223,7 @@
           'dependencies': [
             'libpomelo2',
           ],
+          'cflags': ['-fPIC']
           'include_dirs': [
             './include/',
           ],

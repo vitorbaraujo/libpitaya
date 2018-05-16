@@ -4,8 +4,8 @@ setup-go:
 	@~/bin/gimme stable
 
 setup-node:
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-	. ~/.nvm/nvm.sh && nvm install 10.0.0
+	@curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+	@. ~/.nvm/nvm.sh && nvm install 10.0.0
 
 setup-gyp:
 	@git clone https://chromium.googlesource.com/external/gyp.git ~/gyp
@@ -16,8 +16,11 @@ setup-ci: setup-gyp setup-node setup-go
 
 .PHONY: build
 
+test-deps:
+	cd test/server && go get
+
 build:
 	cd build && make
 
-test: build
+test: build test-deps
 	./run-tests.sh

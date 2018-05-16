@@ -1,5 +1,8 @@
 language: c
 compiler: clang
 install: make setup-ci
-script: make test
+script: make build
 sudo: required
+addons:
+  apt:
+    update: true

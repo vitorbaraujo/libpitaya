@@ -1,5 +1,7 @@
 setup-go:
-	@eval "$(curl -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme | GIMME_GO_VERSION=1.10.2 bash)"
+	@curl -sL -o ~/gimme https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
+	@chmod +x ~/gimme
+	@~/gimme 1.10.2
 	@ Go installed version $(shell go version)
 
 setup-node:

@@ -228,7 +228,7 @@
                 'cflags': [
                     '-fPIC'
                 ],
-            },
+            }],
           ],
           'include_dirs': [
             './include/',

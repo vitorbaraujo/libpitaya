@@ -2,7 +2,7 @@
   'variables': {
     'uv_library%': "static_library",
       'pomelo_library%': "static_library",
-      'target_arch%': "ia32",
+      'build_for_ios%': "false",
       'use_sys_openssl%': "true",
       'library%': "static_library",
       'use_sys_uv%': "false",
@@ -219,17 +219,19 @@
       ['build_cspomelo == "true"', {
         'targets':[ {
           'target_name': 'cspomelo',
-          'type': 'shared_library',
           'product_extension': 'bundle',
           'dependencies': [
             'libpomelo2',
           ],
           'conditions': [
             ['OS!="win"', {
-                'cflags': [
-                    '-fPIC'
-                ],
+                'cflags': ['-fPIC'],
             }],
+            ['build_for_ios == "true"', {
+              'type': 'static_library',
+            }, {
+              'type': 'shared_library',
+            }]
           ],
           'include_dirs': [
             './include/',

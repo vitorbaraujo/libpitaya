@@ -1,8 +1,10 @@
 language: c
 compiler: clang
+go:
+  - '1.9.2'
 os:
-- linux
-- osx
+  - linux
+  - osx
 install: make setup-ci
 script:
   - if [[ -n $TRAVIS_TAG ]]; then echo "travis tag is $TRAVIS_TAG"; fi
@@ -26,4 +28,4 @@ deploy:
   on:
     repo: topfreegames/libpitaya
     branch: travis-integration
-    #tags: true
+    tags: true

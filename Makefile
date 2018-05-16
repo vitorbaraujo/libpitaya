@@ -2,7 +2,7 @@ setup-go:
 	@curl -sL -o ~/gimme https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
 	@chmod +x ~/gimme
 	@rm -rf ~/.gimme
-	@GIMME_OUTPUT="$(~/gimme 1.10.2 | tee -a $HOME/.bashrc)" && eval "${GIMME_OUTPUT}")
+	@GIMME_OUTPUT="$(~/gimme 1.10.2 | tee -a $HOME/.bashrc)" && eval "${GIMME_OUTPUT}"
 	@echo Go installed version $(shell go version)
 
 setup-node:

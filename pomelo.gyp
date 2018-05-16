@@ -229,7 +229,7 @@
                     '-fPIC'
                 ],
             },
-          ]
+          ],
           'include_dirs': [
             './include/',
           ],

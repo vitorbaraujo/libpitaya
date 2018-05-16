@@ -2,6 +2,7 @@ setup-go:
 	@sudo rm -rf ~/.gimme
 	@GIMME_OUTPUT="$(shell gimme 1.10.2 | tee -a ${HOME}/.bashrc)" && eval "${GIMME_OUTPUT}"
 	@echo Go installed version $(shell go version)
+	which go
 
 setup-node:
 	@curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash

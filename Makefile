@@ -1,6 +1,7 @@
 setup-go:
 	@sudo rm -rf ~/.gimme
 	@GIMME_OUTPUT="$(shell gimme 1.10.2 | tee -a ${HOME}/.bashrc)" && eval "${GIMME_OUTPUT}"
+	@which go
 	@echo Go installed version $(shell go version)
 	which go
 

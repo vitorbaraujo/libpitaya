@@ -72,7 +72,7 @@ static void* length_error() {
 static pc__msg_raw_t *pc_msg_decode_to_raw(const pc_buf_t* buf)
 {
     int len = buf->len;
-    if (len < PC_MSG_FLAG_BYTES) return length_error();
+    if (len < PC_MSG_FLAG_BYTES) return (pc__msg_raw_t*)length_error();
 
     const char* data = buf->base;
     int offset = 0;
@@ -89,7 +89,7 @@ static pc__msg_raw_t *pc_msg_decode_to_raw(const pc_buf_t* buf)
         id = 0;
         size_t i = 0;
         do {
-            if (offset >= len) return length_error();
+            if (offset >= len) return (pc__msg_raw_t*)length_error();
 
             static const int id_bits_count = 7; // google protobuf varint definition
             id += id_byte->value << (id_bits_count * i++);
@@ -102,13 +102,14 @@ static pc__msg_raw_t *pc_msg_decode_to_raw(const pc_buf_t* buf)
     pc_message_route route = { 0 };
     if (PC_MSG_HAS_ROUTE(flag->message_type)) {
         if (flag->route_compressed) {
-            if (offset + PC_MSG_ROUTE_CODE_BYTES - 1 >= len) return length_error();
+            if (offset + PC_MSG_ROUTE_CODE_BYTES - 1 >= len) return (pc__msg_raw_t*)length_error();
 
             route.route_code = (uint16_t)data[offset];
             offset += 2;
         } else {
             size_t route_len;
-            if (offset + PC_MSG_ROUTE_LEN_BYTES - 1 >= len || (route_len = data[offset++]) >= len) return length_error();
+            if (offset + PC_MSG_ROUTE_LEN_BYTES - 1 >= len || (route_len = data[offset++]) >= len) 
+                return (pc__msg_raw_t*)length_error();
 
             route.route_str = (char *)pc_lib_malloc(route_len + 1);
             route.route_str[route_len] = '\0';
@@ -137,12 +138,11 @@ static pc__msg_raw_t *pc_msg_decode_to_raw(const pc_buf_t* buf)
 
 pc_msg_t pc_default_msg_decode(const pc_JSON* code2route, const pc_buf_t* buf)
 {
-    pc_msg_t msg = {
-        .id = PC_INVALID_REQ_ID,
-        .error = 0,
-        .route = NULL,
-        .json_msg = NULL,
-    };
+    pc_msg_t msg = {0};
+    msg.id = PC_INVALID_REQ_ID;
+    msg.error = 0;
+    msg.route = NULL;
+    msg.json_msg = NULL;
 
     assert(buf && buf->base);
 
@@ -350,8 +350,13 @@ pc_buf_t pc_default_msg_encode(const pc_JSON* route2code, const pc_msg_t* msg, i
     assert(msg && msg->json_msg && msg->route);
     assert(msg->json_msg->type == pc_JSON_Object);
 
-    pc_buf_t msg_buf = { .base = NULL, .len = -1 };
-    pc_buf_t body_buf = { .base = NULL, .len = -1 };
+    pc_buf_t msg_buf = {0};
+    msg_buf.base = NULL;
+    msg_buf.len = -1;
+
+    pc_buf_t body_buf = {0}; 
+    body_buf.base = NULL; 
+    body_buf.len = -1;
 
     //TODO prever encode n json
     // } else {

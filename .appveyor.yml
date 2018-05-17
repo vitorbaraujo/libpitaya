@@ -33,6 +33,6 @@ before_build:
 build_script:
   - cd build
   - dir
-  - msbuild pomelo.sln /p:Configuration=Release
+  - msbuild pomelo.sln /p:Configuration=Release /p:Platform="Any CPU"
     #- cd build/out/Default
     #- ninja

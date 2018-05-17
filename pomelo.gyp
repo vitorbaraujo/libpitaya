@@ -106,7 +106,7 @@
 
     'targets': [
       {
-        'target_name': 'pitaya.dll',
+        'target_name': 'pitaya',
         'include_dirs': [
           './include',
           './src',
@@ -168,16 +168,16 @@
         'target_name': 'tests',
         'type': 'executable',
         'dependencies': [
-          'pitaya.dll',
+          'pitaya',
         ],
         'conditions': [
           ['build_for_windows == "true" or build_for_linux == "true"', {
             'libraries': [
-              'pitaya.dll',
+              'pitaya.lib',
             ],
           }, {
             'dependencies': [
-              'pitaya.dll',
+              'pitaya',
             ],
           }]
         ],
@@ -207,7 +207,7 @@
           'target_name': 'pypomelo',
           'type': 'shared_library',
           'dependencies': [
-            'pitaya.dll',
+            'pitaya',
           ],
           'include_dirs': [
             './include/',
@@ -223,7 +223,7 @@
           'target_name': 'jpomelo',
           'type': 'shared_library',
           'dependencies': [
-            'pitaya.dll',
+            'pitaya',
           ],
           'include_dirs': [
             './include/',
@@ -240,7 +240,7 @@
     #           'target_name': 'pitaya_unity',
     #           'type': 'shared_library',
     #           'dependencies': [
-    #             'pitaya.dll',
+    #             'pitaya',
     #           ],
     #           'conditions': [
     #             ['OS!="win"', {
@@ -263,7 +263,7 @@
     #           'target_name': 'pitaya_unity_ios',
     #           'type': 'static_library',
     #           'dependencies': [
-    #             'pitaya.dll',
+    #             'pitaya',
     #           ],
     #           'conditions': [
     #             ['OS!="win"', {

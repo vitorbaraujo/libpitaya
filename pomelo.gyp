@@ -164,31 +164,42 @@
           ], # no uv support
         ],
       },
-      # {
-      #   'target_name': 'tests',
-      #   'type': 'executable',
-      #   'dependencies': [
-      #     'libpitaya',
-      #   ],
-      #   'include_dirs': [
-      #     './include/',
-      #     '/usr/local/include',
-      #     './deps/munit'
-      #   ],
-      #   'sources': [
-      #     './test/main.c',
-      #     './test/test-tr_tcp.c',
-      #     './test/test-tr_tls.c',
-      #     './test/test_pc_client.c',
-      #     './test/test_reconnection.c',
-      #     './test/test_compression.c',
-      #     './test/test_kick.c',
-      #     './test/test_session.c',
-      #     './test/test_request.c',
-      #     './test/test_notify.c',
-      #     './deps/munit/munit.c',
-      #   ],
-      # },
+      {
+        'target_name': 'tests',
+        'type': 'executable',
+        'conditions': [
+          ['build_for_windows == "true" or build_for_linux == "true"', {
+            'link_settings': {
+              'libraries': ['-llibpitaya']
+            }
+          }, {
+            'dependencies': [
+              'libpitaya',
+            ],
+          }]
+        ],
+        'dependencies': [
+          'libpitaya',
+        ],
+        'include_dirs': [
+          './include/',
+          '/usr/local/include',
+          './deps/munit'
+        ],
+        'sources': [
+          './test/main.c',
+          './test/test-tr_tcp.c',
+          './test/test-tr_tls.c',
+          './test/test_pc_client.c',
+          './test/test_reconnection.c',
+          './test/test_compression.c',
+          './test/test_kick.c',
+          './test/test_session.c',
+          './test/test_request.c',
+          './test/test_notify.c',
+          './deps/munit/munit.c',
+        ],
+      },
     ],
     'conditions': [
       ['build_pypomelo == "true"', {

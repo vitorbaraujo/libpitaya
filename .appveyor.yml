@@ -31,8 +31,7 @@ install:
 
   - 7z x "zlib1211.zip" -y > $null
   - cd zlib-1.2.11\contrib\vstudio\vc14
-  - msbuild zlibvc.sln
-  - echo "zlib compiled successfully!"
+  - devenv zlibvc.sln /Build
 
   # Enable command line toolset
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64

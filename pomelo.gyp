@@ -58,7 +58,7 @@
           ]
         }],   # OS == "win"
         ['use_xcode == "false"', {
-          'product_dir': 'output',
+          #'product_dir': 'output',
         }],
         ['build_type=="Debug"', {
           'cflags': ['-g', '-O0', '-Wall', '-Wextra', '-pedantic']

@@ -9,9 +9,12 @@ configuration:
 
 environment:
   matrix:
-    - PYTHON: "C:\\Python27.10-x64"
-      PYTHON_VERSION: "2.7.10"
-      PYTHON_ARCH: "64"
+      #- PYTHON: "C:\\Python27.10-x64"
+      #PYTHON_VERSION: "2.7.10"
+      #PYTHON_ARCH: "64"
+    - tbs_arch: "x64"
+      tbs_tools: "mingw"
+      tbs_static_runtime: 0
 
 install:
   ############################################################################
@@ -31,13 +34,15 @@ install:
   ############################################################################
   # Install zlib
   ############################################################################
+  # get common functions
+  - git clone https://github.com/imazen/gd-appveyor-helpers
+  - ps: . .\gd-appveyor-helpers\appveyor_funcs.ps1
+  
+  # fetch deps
   - nuget install zlib-%tbs_tools%-%tbs_arch%-master -Source https://ci.appveyor.com/nuget/zlib-94hmpf3q011d
-  - ps: move zlib*\* deps -force
-  - if [%tbs_tools%]==[mingw] move deps\libzlibstatic.a deps\libz.a
-  - if [%tbs_tools%]==[msvc12] move deps\zlibstatic.lib deps\zlib.lib
-  - SET tbsd_zlib_built=1
-  - SET tbsd_zlib_incdir=deps
-  - SET tbsd_zlib_libdir=deps
+  - move zlib* zlib
+  - del zlib\*.dll*
+  - ps: ls zlib\*_static.lib | % {move $_ ($_ -replace '_static', '') -force}
 
 before_build:
   - python --version

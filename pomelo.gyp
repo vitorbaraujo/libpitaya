@@ -172,11 +172,9 @@
         ],
         'conditions': [
           ['build_for_windows == "true" or build_for_linux == "true"', {
-            'link_settings': {
-              'libraries': [
-                '-lpitaya',
-              ],
-            }
+            'libraries': [
+              'pitaya.dll',
+            ],
           }, {
             'dependencies': [
               'pitaya',

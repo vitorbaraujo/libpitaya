@@ -9,12 +9,10 @@ configuration:
 
 environment:
   matrix:
-      #- PYTHON: "C:\\Python27.10-x64"
-      #PYTHON_VERSION: "2.7.10"
-      #PYTHON_ARCH: "64"
-    - tbs_arch: "x64"
-      tbs_tools: "mingw"
-      tbs_static_runtime: 0
+    - PROFILE: MSVC2017
+      PLATFORM: x64
+      ZLIB_VERSION: 1.2.11
+
 
 install:
   ############################################################################
@@ -37,7 +35,7 @@ install:
   # get common functions
   - git clone https://github.com/imazen/gd-appveyor-helpers
   - ps: . .\gd-appveyor-helpers\appveyor_funcs.ps1
-  
+
   # fetch deps
   - nuget install zlib-%tbs_tools%-%tbs_arch%-master -Source https://ci.appveyor.com/nuget/zlib-94hmpf3q011d
   - move zlib* zlib

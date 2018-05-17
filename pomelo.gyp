@@ -28,6 +28,16 @@
       'conditions': [
         ['OS == "win"', {
           'default_configuration': 'Release_x64',
+          'configurations': {
+            'Debug_x64': {
+                'inherit_from': ['Debug'],
+                'msvs_configuration_platform': 'x64',
+            },
+            'Release_x64': {
+                'inherit_from': ['Release'],
+                'msvs_configuration_platform': 'x64',
+            },
+          },
           'msvs_settings': {
             'VCCLCompilerTool': {
               'AdditionalOptions': [ '/TP' ],

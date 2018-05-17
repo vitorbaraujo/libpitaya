@@ -40,6 +40,9 @@ install:
 
 before_build:
   - cd C:\projects\libpitaya
+  - set CC=clang
+  - set CXX=clang++
+  - set GYP_DEFINES="clang=1"
   - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false -Dbuild_cspomelo=true -Dbuild_for_windows=true
 
 build_script:

@@ -15,7 +15,7 @@ install:
   ############################################################################
   # Install Ninja
   ############################################################################
-  #- choco install ninja
+  - choco install ninja
 
   ############################################################################
   # Install GYP
@@ -28,12 +28,13 @@ install:
 
 before_build:
   - cd C:\projects\libpitaya
-  - gyp --depth=. pomelo.gyp --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
+  - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
 
 build_script:
-  - cd build
-  - dir
-  - cat libpitaya.vcxproj
-  - msbuild pomelo.sln /t:Build /p:Configuration=Release /p:Platform=Win32
+  - cd build/out/Default
+  - ninja
+  # - dir
+  # - cat libpitaya.vcxproj
+  # - msbuild pomelo.sln /t:Build /p:Configuration=Release /p:Platform=Win32
     #- cd build/out/Default
     #- ninja

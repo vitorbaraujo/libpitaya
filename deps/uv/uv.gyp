@@ -11,6 +11,11 @@
               'msvs_configuration_platform': 'x64',
           },
         },
+        'msvs_settings': {
+          'VCCLCompilerTool': {
+            'AdditionalOptions': [ '/TP' ],
+          }
+        },
         'defines': [
           '_LARGEFILE_SOURCE',
           '_FILE_OFFSET_BITS=64',

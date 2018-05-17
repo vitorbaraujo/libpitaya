@@ -19,6 +19,11 @@
               'msvs_configuration_platform': 'x64',
           },
         },
+        'msvs_settings': {
+          'VCCLCompilerTool': {
+            'AdditionalOptions': [ '/TP' ],
+          }
+        },
       }],
     ],
   },

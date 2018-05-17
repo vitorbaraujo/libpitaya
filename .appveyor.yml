@@ -6,6 +6,7 @@ build:
 configuration: Release
 
 environment:
+  nodejs_version: "Current"
   matrix:
     - arch: x64
       compiler: msys2-mingw
@@ -32,6 +33,7 @@ before_build:
 
 build_script:
   - cd build/out/Default
+  - cat build.ninja
   - ninja
   - dir
   # - cat libpitaya.vcxproj

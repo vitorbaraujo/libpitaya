@@ -30,13 +30,15 @@ install:
 
 before_build:
   - cd C:\projects\libpitaya
-  - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
+  - gyp --depth=. pomelo.gyp -Duse_sys_openssl=false -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
 
 build_script:
-  - cd build/out/Default
-  - cat build.ninja
-  - ninja
+    #- cd build/out/Default
+    #- cat build.ninja
+    #- ninja
+    #- dir
   - dir
+  - msbuild pomelo.sln
   # - cat libpitaya.vcxproj
   # - msbuild pomelo.sln /t:Build /p:Configuration=Release /p:Platform=Win32
     #- cd build/out/Default

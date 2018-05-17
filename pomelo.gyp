@@ -175,9 +175,17 @@
         #     ],
         #   }]
         # ],
-        'link_settings': {
-          'libraries': ['-llibpitaya'],
-        },
+        # 'link_settings': {
+        #   'libraries': [
+        #     '-llibpitaya',
+        #   ],
+        #   'library_dirs': [
+        #     './build/out/Default'
+        #   ],
+        # },
+        'dependencies': [
+          'libpitaya',
+        ],
         'include_dirs': [
           './include/',
           '/usr/local/include',

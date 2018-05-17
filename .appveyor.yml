@@ -33,6 +33,7 @@ before_build:
 build_script:
   - cd build
   - dir
+  - cat libpitaya.vcxproj
   - msbuild pomelo.sln /t:Build /p:Configuration=Debug /p:Platform=x64
     #- cd build/out/Default
     #- ninja

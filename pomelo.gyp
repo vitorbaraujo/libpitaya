@@ -22,6 +22,9 @@
   },
 
     'target_defaults': {
+      'dependencies': [
+        './deps/zlib/zlib.gyp:zlib',
+      ],
       'conditions': [
         ['OS == "win"', {
           'msvs_settings': {
@@ -54,9 +57,7 @@
             '_GNU_SOURCE'
           ]
         }],   # OS == "win"
-        ['use_xcode == "true"', {
-          'xcode_settings': {'OTHER_LDFLAGS': ['-lz']},
-        }, {
+        ['use_xcode == "false"', {
           'product_dir': 'output',
         }],
         ['build_type=="Debug"', {
@@ -118,6 +119,9 @@
           './src/pc_JSON.c',
           './src/tr/dummy/tr_dummy.c'
         ],
+        'dependencies': [
+          './deps/zlib/zlib.gyp:zlib',
+        ],
         'conditions': [
           ['OS != "win"', {
             'defines': ['_GNU_SOURCE'],
@@ -144,11 +148,6 @@
               './src/tr/uv/tr_uv_tcp_i.c',
               './src/tr/uv/tr_uv_tcp_aux.c',
             ],
-            'link_settings': {
-               'libraries': [
-                 '-lz',
-               ],
-            },
             'conditions': [
               ['no_tls_support == "false"', {
                 'sources': [
@@ -165,31 +164,31 @@
           ], # no uv support
         ],
       },
-      # {
-      #   'target_name': 'tests',
-      #   'type': 'executable',
-      #   'dependencies': [
-      #     'libpitaya',
-      #   ],
-      #   'include_dirs': [
-      #     './include/',
-      #     '/usr/local/include',
-      #     './deps/munit'
-      #   ],
-      #   'sources': [
-      #     './test/main.c',
-      #     './test/test-tr_tcp.c',
-      #     './test/test-tr_tls.c',
-      #     './test/test_pc_client.c',
-      #     './test/test_reconnection.c',
-      #     './test/test_compression.c',
-      #     './test/test_kick.c',
-      #     './test/test_session.c',
-      #     './test/test_request.c',
-      #     './test/test_notify.c',
-      #     './deps/munit/munit.c',
-      #   ],
-      # },
+      {
+        'target_name': 'tests',
+        'type': 'executable',
+        'dependencies': [
+          'libpitaya',
+        ],
+        'include_dirs': [
+          './include/',
+          '/usr/local/include',
+          './deps/munit'
+        ],
+        'sources': [
+          './test/main.c',
+          './test/test-tr_tcp.c',
+          './test/test-tr_tls.c',
+          './test/test_pc_client.c',
+          './test/test_reconnection.c',
+          './test/test_compression.c',
+          './test/test_kick.c',
+          './test/test_session.c',
+          './test/test_request.c',
+          './test/test_notify.c',
+          './deps/munit/munit.c',
+        ],
+      },
     ],
     'conditions': [
       ['build_pypomelo == "true"', {

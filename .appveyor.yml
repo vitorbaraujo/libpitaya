@@ -20,28 +20,12 @@ install:
   - cd gyp
   - python setup.py install
 
-  ############################################################################
-  # Install zlib
-  ############################################################################
-  # get common functions
-  - ps: |
-      $zlib_url = "https://zlib.net/zlib1211.zip"
-      Invoke-WebRequest $zlib_url -OutFile "C:\projects\deps\zlib1211.zip"
-      cd C:\projects\deps
-
-  - 7z x "zlib1211.zip" -y > $null
-  - cd zlib-1.2.11\contrib\vstudio\vc14
-  - devenv zlibvc.sln /Build
-
   # Enable command line toolset
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
   - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
 
 before_build:
   - cd C:\projects\libpitaya
-  - set CC="C:\Program Files\LLVM\bin\clang"
-  - set CXX="C:\Program Files\LLVM\bin\clang++"
-  - set GYP_DEFINES="clang=1"
   - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false -Dbuild_cspomelo=true -Dbuild_for_windows=true
 
 build_script:

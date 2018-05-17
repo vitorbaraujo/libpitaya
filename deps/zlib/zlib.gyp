@@ -11,12 +11,11 @@
         'msvs_settings': {
           'VCCLCompilerTool': {
             'AdditionalOptions': [ '/TP' ],
-          }
+          },
         },
-      }]
-    ]
-  }
-
+      }],
+    ],
+  },
 
   'targets': [
     {

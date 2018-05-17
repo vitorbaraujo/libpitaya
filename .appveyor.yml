@@ -12,6 +12,8 @@ environment:
     - PROFILE: MSVC2017
       PLATFORM: x64
       ZLIB_VERSION: 1.2.11
+      Compiler: clang
+      Platform: Win32
 
 
 install:

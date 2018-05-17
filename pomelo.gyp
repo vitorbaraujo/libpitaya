@@ -24,7 +24,12 @@
     'target_defaults': {
       'conditions': [
         ['OS == "win"', {
-          'defines': {
+          'msvs_settings': {
+            'VCCLCompilerTool': {
+              'AdditionalOptions': [ '/TP' ],
+            }
+          },
+          'defines': [
             '_WIN32',
             'WIN32',
             '_CRT_NONSTDC_NO_DEPRECATE',
@@ -32,7 +37,7 @@
             '_WINDLL',
             'UNICODE',
             '_UNICODE',
-          },
+          ],
           'link_settings': {
             'libraries': [
               '-ladvapi32.lib',

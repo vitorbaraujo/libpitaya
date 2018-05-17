@@ -24,14 +24,14 @@ install:
   # Install zlib
   ############################################################################
   # get common functions
-  - ps: >-
-    $zlib_url = "https://zlib.net/zlib1211.zip"
-    Invoke-WebRequest $zlib_url -OutFile "C:\projects\deps"
-    Set-Location C:\projects\deps
-    7z x zlib1211.zip -y -o zlib > NUL
-    Set-Location zlib\contrib\vstudio\vc14
-    msbuild zlibvc.sln
-    Write-Host "zlib compiled successfully!"
+  - ps: |
+      $zlib_url = "https://zlib.net/zlib1211.zip"
+      Invoke-WebRequest $zlib_url -OutFile "C:\projects\deps"
+      Set-Location C:\projects\deps
+      7z x zlib1211.zip -y -o zlib > NUL
+      Set-Location zlib\contrib\vstudio\vc14
+      msbuild zlibvc.sln
+      Write-Host "zlib compiled successfully!"
 
   # fetch deps
   # - nuget install zlib-%tbs_tools%-%tbs_arch%-master -Source https://ci.appveyor.com/nuget/zlib-94hmpf3q011d

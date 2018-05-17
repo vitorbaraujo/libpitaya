@@ -29,6 +29,7 @@ install:
   - python setup.py install
 
 before_build:
+  - python --version
   - cd C:\projects\libpitaya
   - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false -Dbuild_cspomelo=true -Dbuild_for_windows=true
 

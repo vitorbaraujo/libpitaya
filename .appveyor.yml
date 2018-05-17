@@ -1,20 +1,9 @@
-os:
-  - Visual Studio 2015
+image: Visual Studio 2015
 
 build:
   verbosity: detailed
 
-configuration:
-  - Release
-
-environment:
-  matrix:
-    - PROFILE: MSVC2017
-      PLATFORM: x64
-      ZLIB_VERSION: 1.2.11
-      Compiler: clang
-      Platform: Win32
-
+configuration: Release
 
 install:
   ############################################################################
@@ -35,8 +24,14 @@ install:
   # Install zlib
   ############################################################################
   # get common functions
-  - git clone https://github.com/imazen/gd-appveyor-helpers
-  - ps: . .\gd-appveyor-helpers\appveyor_funcs.ps1
+  - ps: >-
+    $zlib_url = "https://zlib.net/zlib1211.zip"
+    Invoke-WebRequest -Uri $zlib_url -OutFile 'C:\projects\deps'
+    Set-Location C:\projects\deps
+    7z x zlib1211.zip -y -o zlib > NUL
+    Set-Location zlib\contrib\vstudio\vc14
+    msbuild zlibvc.sln
+    Write-Host "zlib compiled successfully!"
 
   # fetch deps
   # - nuget install zlib-%tbs_tools%-%tbs_arch%-master -Source https://ci.appveyor.com/nuget/zlib-94hmpf3q011d
@@ -44,8 +39,11 @@ install:
   # - del zlib\*.dll*
   # - ps: ls zlib\*_static.lib | % {move $_ ($_ -replace '_static', '') -force}
 
+  # Enable command line toolset
+  call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+  call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
+
 before_build:
-  - python --version
   - cd C:\projects\libpitaya
   - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false -Dbuild_cspomelo=true -Dbuild_for_windows=true
 

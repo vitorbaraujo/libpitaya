@@ -78,9 +78,9 @@ static pc_error_t
 pc__error_dup(const pc_error_t *err)
 {
     pc_error_t new_err = {0};
-    err.code = err->code ? (char*)pc_lib_strdup(err->code) : NULL;
-    err.msg = err->msg ? (char*)pc_lib_strdup(err->msg) : NULL;
-    err.metadata = err->metadata ? (char*)pc_lib_strdup(err->metadata) : NULL;
+    new_err.code = err->code ? (char*)pc_lib_strdup(err->code) : NULL;
+    new_err.msg = err->msg ? (char*)pc_lib_strdup(err->msg) : NULL;
+    new_err.metadata = err->metadata ? (char*)pc_lib_strdup(err->metadata) : NULL;
     return new_err;
 }
 

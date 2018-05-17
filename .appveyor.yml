@@ -28,7 +28,7 @@ install:
       $zlib_url = "https://zlib.net/zlib1211.zip"
       Invoke-WebRequest $zlib_url -OutFile "C:\projects\deps\zlib1211.zip"
       Set-Location C:\projects\deps
-      7z x zlib1211.zip -y -o zlib > NUL
+      7z x zlib1211.zip -y -o zlib > $null
       cd zlib\contrib\vstudio\vc14
       msbuild zlibvc.sln
       Write-Host "zlib compiled successfully!"

@@ -174,7 +174,7 @@
           ['build_for_windows == "true" or build_for_linux == "true"', {
             'link_settings': {
               'libraries': [
-                'libpitaya.dll',
+                'libpitaya',
               ],
             }
           }, {

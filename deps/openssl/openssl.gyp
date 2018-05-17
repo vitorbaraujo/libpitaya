@@ -7,7 +7,7 @@
     'is_clang': 0,
     'gcc_version': 0,
     'library': 'static_library',
-    'target_arch%': 'dummy',
+    'target_arch%': 'x64',
   },
 
   'target_defaults': {

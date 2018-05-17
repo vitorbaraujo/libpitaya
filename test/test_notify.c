@@ -20,7 +20,7 @@ request_error_cb(const pc_request_t* req, pc_error_t error)
 static void
 notify_error_cb(const pc_notify_t* not, pc_error_t error)
 {
-    bool *called = pc_notify_ex_data(not);
+    bool *called = (bool*)pc_notify_ex_data(not);
     *called = true;
     assert_string_equal(error.code, "PC_RC_RESET");
 }

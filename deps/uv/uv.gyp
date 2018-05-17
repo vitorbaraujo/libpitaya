@@ -5,6 +5,12 @@
   'target_defaults': {
     'conditions': [
       ['OS != "win"', {
+        'default_configuration': 'Release_x64',
+        'configurations': {
+          'Release_x64': {
+              'msvs_configuration_platform': 'x64',
+          },
+        },
         'defines': [
           '_LARGEFILE_SOURCE',
           '_FILE_OFFSET_BITS=64',

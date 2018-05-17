@@ -24,7 +24,7 @@ static void
 event_cb(pc_client_t* client, int ev_type, void* ex_data, const char* arg1, const char* arg2)
 {
     Unused(client); Unused(arg1); Unused(arg2);
-    int *num_called = ex_data;
+    int *num_called = (int*)ex_data;
     assert_int(ev_type, ==, EV_ORDER[*num_called]);
     (*num_called)++;
 }
@@ -32,7 +32,7 @@ event_cb(pc_client_t* client, int ev_type, void* ex_data, const char* arg1, cons
 static void
 request_cb(const pc_request_t* req, const char* resp)
 {
-    bool *called = pc_request_ex_data(req);
+    bool *called = (bool*)pc_request_ex_data(req);
     *called = true;
 
     assert_string_equal(resp, EMPTY_RESP);
@@ -46,7 +46,7 @@ request_cb(const pc_request_t* req, const char* resp)
 static void
 notify_cb(const pc_notify_t* noti, pc_error_t err)
 {
-    bool *called = pc_notify_ex_data(noti);
+    bool *called = (bool*)pc_notify_ex_data(noti);
     *called = true;
 }
 
@@ -95,7 +95,7 @@ connect_failed_event_cb(pc_client_t* client, int ev_type, void* ex_data, const c
 {
     Unused(client);
 
-    bool *called = ex_data;
+    bool *called = (bool*)ex_data;
     *called = true;
     assert_int(ev_type, ==, PC_EV_CONNECT_FAILED);
     assert_string_equal(arg1, "TLS Handshake Error");

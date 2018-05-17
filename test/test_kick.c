@@ -18,7 +18,7 @@ static void
 event_cb(pc_client_t* client, int ev_type, void* ex_data, const char* arg1, const char* arg2)
 {
     Unused(client); Unused(arg1); Unused(arg2);
-    int *num_called = ex_data;
+    int *num_called = (int*)ex_data;
     assert_int(ev_type, ==, EV_ORDER[*num_called]);
     (*num_called)++;
 }

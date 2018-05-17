@@ -1,9 +1,15 @@
-image: Visual Studio 2013
+image: Visual Studio 2017
 
 build:
   verbosity: detailed
 
 configuration: Release
+
+environment:
+  matrix:
+    - arch: x64
+      compiler: msys2-mingw
+      backend: ninja
 
 install:
   ############################################################################
@@ -19,6 +25,8 @@ install:
   - git clone https://chromium.googlesource.com/external/gyp.git
   - cd gyp
   - python setup.py install
+
+  - set PATH=C:\msys64\bin;%PATH%
 
 before_build:
   - cd C:\projects\libpitaya

@@ -18,7 +18,7 @@
       'build_jpomelo%': "false",
       'build_cspomelo%': "false",
       'build_type%': "Release",
-      'use_xcode%': "true",
+      'use_xcode%': "false",
   },
 
     'target_defaults': {

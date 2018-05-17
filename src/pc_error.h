@@ -25,12 +25,14 @@ pc__error_json(pc_JSON *json)
     pc_JSON *code = pc_JSON_GetObjectItem(json, "Code");
     if (!code) {
         pc_lib_log(PC_LOG_ERROR, "pc__error_json - invalid json 'no Code'");
-        return (pc_error_t){ .code = NULL, .msg = NULL };
+        pc_error_t err = {0};
+        return err;
     }
     pc_JSON *msg = pc_JSON_GetObjectItem(json, "Msg");
     if (!msg) {
         pc_lib_log(PC_LOG_ERROR, "pc__error_json - invalid json 'no Msg'");
-        return (pc_error_t){ .code = NULL, .msg = NULL };
+        pc_error_t err = {0};
+        return err;
     }
     pc_JSON *metadata = pc_JSON_GetObjectItem(json, "Metadata");
 

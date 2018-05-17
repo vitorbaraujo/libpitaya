@@ -29,7 +29,7 @@ install:
       Invoke-WebRequest $zlib_url -OutFile "C:\projects\deps\zlib1211.zip"
       cd C:\projects\deps
 
-  - 7z x "zlib1211.zip" -y -o "zlib" > $null
+  - 7z x "zlib1211.zip" -y > $null
   - cd zlib\contrib\vstudio\vc14
   - msbuild zlibvc.sln
   - echo "zlib compiled successfully!"

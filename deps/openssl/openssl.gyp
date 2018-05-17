@@ -27,16 +27,6 @@
     {
       'target_name': 'openssl',
       'type': '<(library)',
-      'conditions': [
-        ['OS == "win"', {
-          'default_configuration': 'Release_x64',
-          'configurations': {
-            'Release_x64': {
-                'msvs_configuration_platform': 'x64',
-            },
-          },
-        }],
-      ],
       'sources': [
         'openssl/ssl/bio_ssl.c',
         'openssl/ssl/d1_both.c',
@@ -948,6 +938,12 @@
           ]
         }],
         ['OS=="win"', {
+          'default_configuration': 'Release_x64',
+          'configurations': {
+            'Release_x64': {
+                'msvs_configuration_platform': 'x64',
+            },
+          },
           'link_settings': {
             'libraries': [
               '-lgdi32.lib',

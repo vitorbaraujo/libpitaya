@@ -28,12 +28,22 @@ install:
   - cd gyp
   - python setup.py install
 
+  ############################################################################
+  # Install zlib
+  ############################################################################
+  - nuget install zlib-%tbs_tools%-%tbs_arch%-master -Source https://ci.appveyor.com/nuget/zlib-94hmpf3q011d
+  - ps: move zlib*\* deps -force
+  - if [%tbs_tools%]==[mingw] move deps\libzlibstatic.a deps\libz.a
+  - if [%tbs_tools%]==[msvc12] move deps\zlibstatic.lib deps\zlib.lib
+  - SET tbsd_zlib_built=1
+  - SET tbsd_zlib_incdir=deps
+  - SET tbsd_zlib_libdir=deps
+
 before_build:
   - python --version
   - cd C:\projects\libpitaya
   - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false -Dbuild_cspomelo=true -Dbuild_for_windows=true
 
 build_script:
-  - dir
   - cd build/out/Default
   - ninja

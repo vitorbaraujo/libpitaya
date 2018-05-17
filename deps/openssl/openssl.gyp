@@ -10,19 +10,6 @@
     'target_arch%': 'x64',
   },
 
-  'target_defaults': {
-    'conditions': [
-      ['OS == "win"', {
-        'default_configuration': 'Release_x64',
-        'configurations': {
-          'Release_x64': {
-              'msvs_configuration_platform': 'x64',
-          },
-        },
-      }],
-    ],
-  },
-
   'targets': [
     {
       'target_name': 'openssl',
@@ -938,12 +925,6 @@
           ]
         }],
         ['OS=="win"', {
-          'default_configuration': 'Release_x64',
-          'configurations': {
-            'Release_x64': {
-                'msvs_configuration_platform': 'x64',
-            },
-          },
           'link_settings': {
             'libraries': [
               '-lgdi32.lib',
@@ -1091,6 +1072,12 @@
     ],
     'conditions': [
       ['OS=="win"', {
+        'default_configuration': 'Release_x64',
+        'configurations': {
+          'Release_x64': {
+              'msvs_configuration_platform': 'x64',
+          },
+        },
         'defines': [
           'MK1MF_BUILD',
           'WIN32_LEAN_AND_MEAN',

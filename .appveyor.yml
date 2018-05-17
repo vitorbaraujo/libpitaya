@@ -1,4 +1,4 @@
-image: Visual Studio 2015
+image: Visual Studio 2017
 
 build:
   verbosity: detailed
@@ -19,10 +19,6 @@ install:
   - git clone https://chromium.googlesource.com/external/gyp.git
   - cd gyp
   - python setup.py install
-
-  # Enable command line toolset
-  - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
 
 before_build:
   - cd C:\projects\libpitaya

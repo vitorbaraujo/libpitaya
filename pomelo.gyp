@@ -176,9 +176,6 @@
             ],
           }]
         ],
-        'dependencies': [
-          'libpitaya',
-        ],
         'include_dirs': [
           './include/',
           '/usr/local/include',

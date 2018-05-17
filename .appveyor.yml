@@ -33,5 +33,8 @@ before_build:
 build_script:
   - cd build/out/Default
   - ninja
+  - dir
+  - cd output
+  - dir
     #- cd build/out/Default
     #- ninja

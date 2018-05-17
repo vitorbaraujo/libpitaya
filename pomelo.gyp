@@ -173,13 +173,10 @@
               'libraries': [
                 'libpitaya.dll',
               ],
-              'library_dirs': [
-                './build/out/Default'
-              ],
-            },
+            }
           }, {
             'dependencies': [
-              'libpitaya.dll',
+              'libpitaya',
             ],
           }]
         ],

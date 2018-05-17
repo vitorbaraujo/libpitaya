@@ -30,8 +30,7 @@ install:
       cd C:\projects\deps
 
   - 7z x "zlib1211.zip" -y > $null
-  - dir
-  - cd zlib\contrib\vstudio\vc14
+  - cd zlib-1.2.11\contrib\vstudio\vc14
   - msbuild zlibvc.sln
   - echo "zlib compiled successfully!"
 

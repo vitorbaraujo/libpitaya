@@ -1,9 +1,3 @@
-# Copyright Louis Dionne 2013-2017
-# Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
-
-shallow_clone: true
-
 os:
   - Visual Studio 2015
 
@@ -15,36 +9,20 @@ configuration:
 
 install:
   ############################################################################
-  # All external dependencies are installed in C:\projects\deps
-  ############################################################################
-  - mkdir C:\projects\deps
-  - cd C:\projects\deps
-
-  ############################################################################
   # Install Ninja
   ############################################################################
-  # - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip"
-  # - appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
-  # - 7z x ninja.zip -oC:\projects\deps\ninja > nul
-  # - set PATH=C:\projects\deps\ninja;%PATH%
-  # - ninja --version
   - choco install ninja
 
   ############################################################################
   # Install GYP
   ############################################################################
+  - mkdir C:\projects\deps
+  - cd C:\projects\deps
 	- git clone https://chromium.googlesource.com/external/gyp.git
   - cd gyp
   - python setup.py install
 
-  ############################################################################
-  # Setup the path to Clang-cl
-  ############################################################################
-  - set PATH="C:\Program Files\LLVM\bin";%PATH%
-  - clang-cl -v
-
 before_build:
-  #- call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
   - cd C:\projects\libpitaya
 	- gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=false -Dbuild_type=Release -Duse_xcode=false -Dbuild_cspomelo=true -Dbuild_for_windows=true
 

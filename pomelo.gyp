@@ -27,6 +27,7 @@
       ],
       'conditions': [
         ['OS == "win"', {
+          'default_configuration': 'Release_x64',
           'msvs_settings': {
             'VCCLCompilerTool': {
               'AdditionalOptions': [ '/TP' ],

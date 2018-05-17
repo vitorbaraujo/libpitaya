@@ -201,34 +201,6 @@
               'dependencies': [
                 'libpitaya',
               ],
-              'conditions': [
-                ['OS!="win"', {
-                  'cflags': ['-fPIC'],
-                }],
-                ['build_for_mac == "true"', {
-                  'product_extension': 'bundle',
-                }],
-              ],
-              'include_dirs': [
-                './include/',
-              ],
-              'sources': [
-                './cs/contrib/cspomelo.c',
-              ],
-            }],
-          }],
-          ['build_for_ios == "true"', {
-            'targets':[ {
-              'target_name': 'pitaya_unity_ios',
-              'type': 'static_library',
-              'dependencies': [
-                'libpitaya',
-              ],
-              'conditions': [
-                ['OS!="win"', {
-                  'cflags': ['-fPIC'],
-                }],
-              ],
               'include_dirs': [
                 './include/',
               ],

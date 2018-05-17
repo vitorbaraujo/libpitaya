@@ -176,8 +176,8 @@
         #   }]
         # ],
         'link_settings': {
-          'libraries': ['-llibpitaya']
-        }
+          'libraries': ['-llibpitaya'],
+        },
         'include_dirs': [
           './include/',
           '/usr/local/include',

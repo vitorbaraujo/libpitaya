@@ -167,6 +167,9 @@
       {
         'target_name': 'tests',
         'type': 'executable',
+        'dependencies': [
+          'libpitaya',
+        ],
         'conditions': [
           ['build_for_windows == "true" or build_for_linux == "true"', {
             'link_settings': {
@@ -180,9 +183,6 @@
             ],
           }]
         ],
-            # 'dependencies': [
-            #   'libpitaya.dll',
-            # ],
         'include_dirs': [
           './include/',
           '/usr/local/include',

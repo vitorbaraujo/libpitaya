@@ -23,32 +23,6 @@
 
     'target_defaults': {
       'conditions': [
-        ['OS == "win"', {
-          'defines': {
-            '_WIN32',
-            'WIN32',
-            '_CRT_NONSTDC_NO_DEPRECATE',
-            '_WINDOWS',
-            '_WINDLL',
-            'UNICODE',
-            '_UNICODE',
-          },
-          'link_settings': {
-            'libraries': [
-              '-ladvapi32.lib',
-              '-liphlpapi.lib',
-              '-lpsapi.lib',
-              '-lshell32.lib',
-              '-lws2_32.lib'
-            ],
-          },
-        }, {  # else
-          'defines':[
-            '_LARGEFILE_SOURCE',
-            '_FILE_OFFSET_BITS=64',
-            '_GNU_SOURCE'
-          ]
-        }],   # OS == "win"
         ['use_xcode == "true"', {
           'xcode_settings': {'OTHER_LDFLAGS': ['-lz']},
         }, {

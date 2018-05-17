@@ -23,7 +23,7 @@ install:
   ############################################################################
   - mkdir C:\projects\deps
   - cd C:\projects\deps
-  - git clone https://chromium.googlesource.com/external/gyp.git
+  - git clone https://github.com/leohahn/gyp
   - cd gyp
   - python setup.py install
 

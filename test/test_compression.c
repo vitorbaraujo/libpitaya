@@ -15,7 +15,7 @@ static char *RESPONSES_DISABLED[] = {
 static void
 request_cb_disabled(const pc_request_t* req, const char* resp)
 {
-    int *num_called = pc_request_ex_data(req);
+    int *num_called = (int*)pc_request_ex_data(req);
     assert_string_equal(RESPONSES_DISABLED[*num_called], resp);
     (*num_called)++;
 }
@@ -28,7 +28,7 @@ static char *RESPONSES_ENABLED[] = {
 static void
 request_cb_enabled(const pc_request_t* req, const char* resp)
 {
-    int *num_called = pc_request_ex_data(req);
+    int *num_called = (int*)pc_request_ex_data(req);
     assert_string_equal(RESPONSES_ENABLED[*num_called], resp);
     (*num_called)++;
 }

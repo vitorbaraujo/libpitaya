@@ -32,6 +32,7 @@ before_build:
   - dir C:\OpenSSL-Win64
   - dir C:\OpenSSL-Win64\lib
   - dir C:\OpenSSL-Win64\include
+  - dir C:\OpenSSL-Win64\openssl
   - cd C:\projects\libpitaya
   #- gyp --depth=. pomelo.gyp -Duse_sys_openssl=false -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
   - gyp --depth=. pomelo.gyp -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true

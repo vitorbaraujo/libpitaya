@@ -169,9 +169,7 @@
         'type': 'executable',
         'conditions': [
           ['build_for_windows == "true" or build_for_linux == "true"', {
-            'link_settings': {
-              'libraries': ['-llibpitaya']
-            }
+            'libraries': ['-llibpitaya']
           }, {
             'dependencies': [
               'libpitaya',

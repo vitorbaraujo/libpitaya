@@ -167,25 +167,25 @@
       {
         'target_name': 'tests',
         'type': 'executable',
-        # 'conditions': [
-        #   ['build_for_windows == "true" or build_for_linux == "true"', {
-        #     'link_settings': {
-        #       'libraries': [
-        #         '-llibpitaya',
-        #       ],
-        #       'library_dirs': [
-        #         './build/out/Default'
-        #       ],
-        #     },
-        #   }, {
-        #     'dependencies': [
-        #       'libpitaya.dll',
-        #     ],
-        #   }]
-        # ],
+        'conditions': [
+          ['build_for_windows == "true" or build_for_linux == "true"', {
+            'link_settings': {
+              'libraries': [
+                'libpitaya.dll',
+              ],
+              'library_dirs': [
+                './build/out/Default'
+              ],
+            },
+          }, {
             'dependencies': [
               'libpitaya.dll',
             ],
+          }]
+        ],
+            # 'dependencies': [
+            #   'libpitaya.dll',
+            # ],
         'include_dirs': [
           './include/',
           '/usr/local/include',

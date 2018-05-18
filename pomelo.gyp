@@ -24,9 +24,6 @@
     'target_defaults': {
       'default_configuration': 'Release_x64',
       'configurations': {
-        'Debug_x64': {
-          'msvs_configuration_platform': 'x64',
-        },
         'Release_x64': {
           'msvs_configuration_platform': 'x64',
         },

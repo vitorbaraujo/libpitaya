@@ -3,6 +3,12 @@
     'uv_library%': 'static_library',
   },
   'target_defaults': {
+    'default_configuration': 'Release_x64',
+    'configurations': {
+      'Release_x64': {
+        'msvs_configuration_platform': 'x64',
+      },
+    },
     'conditions': [
       ['OS != "win"', {
         'defines': [
@@ -17,10 +23,6 @@
             'cflags': [ '-pthread' ],
           }],
         ],
-      }, {
-        'msvs_settings': {
-          'msvs_configuration_platform': 'x64',
-        },
       }],
     ],
     'xcode_settings': {

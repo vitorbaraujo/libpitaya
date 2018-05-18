@@ -1,11 +1,4 @@
-#! /usr/bin/env perl
-# Copyright 2007-2016 The OpenSSL Project Authors. All Rights Reserved.
-#
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
-
+#!/usr/bin/env perl
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
@@ -26,7 +19,7 @@
 # February 2010
 #
 # Rescheduling instructions to favour Power6 pipeline gave 10%
-# performance improvement on the platform in question (and marginal
+# performance improvement on the platfrom in question (and marginal
 # improvement even on others). It should be noted that Power6 fails
 # to process byte in 18 cycles, only in 23, because it fails to issue
 # 4 load instructions in two cycles, only in 3. As result non-compact
@@ -52,8 +45,6 @@ if ($flavour =~ /64/) {
 	$PUSH	="stw";
 } else { die "nonsense $flavour"; }
 
-$LITTLE_ENDIAN = ($flavour=~/le$/) ? $SIZE_T : 0;
-
 $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
 ( $xlate="${dir}ppc-xlate.pl" and -f $xlate ) or
 ( $xlate="${dir}../../perlasm/ppc-xlate.pl" and -f $xlate) or
@@ -77,7 +68,7 @@ $key="r5";
 $Tbl0="r3";
 $Tbl1="r6";
 $Tbl2="r7";
-$Tbl3=$out;	# stay away from "r2"; $out is offloaded to stack
+$Tbl3="r2";
 
 $s0="r8";
 $s1="r9";
@@ -85,7 +76,7 @@ $s2="r10";
 $s3="r11";
 
 $t0="r12";
-$t1="r0";	# stay away from "r13";
+$t1="r13";
 $t2="r14";
 $t3="r15";
 
@@ -109,6 +100,9 @@ $acc13="r29";
 $acc14="r30";
 $acc15="r31";
 
+# stay away from TLS pointer
+if ($SIZE_T==8)	{ die if ($t1 ne "r13");  $t1="r0";		}
+else		{ die if ($Tbl3 ne "r2"); $Tbl3=$t0; $t0="r0";	}
 $mask80=$Tbl2;
 $mask1b=$Tbl3;
 
@@ -343,7 +337,8 @@ $code.=<<___;
 	$STU	$sp,-$FRAME($sp)
 	mflr	r0
 
-	$PUSH	$out,`$FRAME-$SIZE_T*19`($sp)
+	$PUSH	$toc,`$FRAME-$SIZE_T*20`($sp)
+	$PUSH	r13,`$FRAME-$SIZE_T*19`($sp)
 	$PUSH	r14,`$FRAME-$SIZE_T*18`($sp)
 	$PUSH	r15,`$FRAME-$SIZE_T*17`($sp)
 	$PUSH	r16,`$FRAME-$SIZE_T*16`($sp)
@@ -370,61 +365,16 @@ $code.=<<___;
 	bne	Lenc_unaligned
 
 Lenc_unaligned_ok:
-___
-$code.=<<___ if (!$LITTLE_ENDIAN);
 	lwz	$s0,0($inp)
 	lwz	$s1,4($inp)
 	lwz	$s2,8($inp)
 	lwz	$s3,12($inp)
-___
-$code.=<<___ if ($LITTLE_ENDIAN);
-	lwz	$t0,0($inp)
-	lwz	$t1,4($inp)
-	lwz	$t2,8($inp)
-	lwz	$t3,12($inp)
-	rotlwi	$s0,$t0,8
-	rotlwi	$s1,$t1,8
-	rotlwi	$s2,$t2,8
-	rotlwi	$s3,$t3,8
-	rlwimi	$s0,$t0,24,0,7
-	rlwimi	$s1,$t1,24,0,7
-	rlwimi	$s2,$t2,24,0,7
-	rlwimi	$s3,$t3,24,0,7
-	rlwimi	$s0,$t0,24,16,23
-	rlwimi	$s1,$t1,24,16,23
-	rlwimi	$s2,$t2,24,16,23
-	rlwimi	$s3,$t3,24,16,23
-___
-$code.=<<___;
 	bl	LAES_Te
 	bl	Lppc_AES_encrypt_compact
-	$POP	$out,`$FRAME-$SIZE_T*19`($sp)
-___
-$code.=<<___ if ($LITTLE_ENDIAN);
-	rotlwi	$t0,$s0,8
-	rotlwi	$t1,$s1,8
-	rotlwi	$t2,$s2,8
-	rotlwi	$t3,$s3,8
-	rlwimi	$t0,$s0,24,0,7
-	rlwimi	$t1,$s1,24,0,7
-	rlwimi	$t2,$s2,24,0,7
-	rlwimi	$t3,$s3,24,0,7
-	rlwimi	$t0,$s0,24,16,23
-	rlwimi	$t1,$s1,24,16,23
-	rlwimi	$t2,$s2,24,16,23
-	rlwimi	$t3,$s3,24,16,23
-	stw	$t0,0($out)
-	stw	$t1,4($out)
-	stw	$t2,8($out)
-	stw	$t3,12($out)
-___
-$code.=<<___ if (!$LITTLE_ENDIAN);
 	stw	$s0,0($out)
 	stw	$s1,4($out)
 	stw	$s2,8($out)
 	stw	$s3,12($out)
-___
-$code.=<<___;
 	b	Lenc_done
 
 Lenc_unaligned:
@@ -467,7 +417,6 @@ Lenc_xpage:
 
 	bl	LAES_Te
 	bl	Lppc_AES_encrypt_compact
-	$POP	$out,`$FRAME-$SIZE_T*19`($sp)
 
 	extrwi	$acc00,$s0,8,0
 	extrwi	$acc01,$s0,8,8
@@ -500,6 +449,8 @@ Lenc_xpage:
 
 Lenc_done:
 	$POP	r0,`$FRAME+$LRSAVE`($sp)
+	$POP	$toc,`$FRAME-$SIZE_T*20`($sp)
+	$POP	r13,`$FRAME-$SIZE_T*19`($sp)
 	$POP	r14,`$FRAME-$SIZE_T*18`($sp)
 	$POP	r15,`$FRAME-$SIZE_T*17`($sp)
 	$POP	r16,`$FRAME-$SIZE_T*16`($sp)
@@ -597,7 +548,7 @@ Lenc_loop:
 	xor	$s2,$t2,$acc14
 	xor	$s3,$t3,$acc15
 	addi	$key,$key,16
-	bdnz	Lenc_loop
+	bdnz-	Lenc_loop
 
 	addi	$Tbl2,$Tbl0,2048
 	nop
@@ -813,7 +764,6 @@ Lenc_compact_done:
 	blr
 	.long	0
 	.byte	0,12,0x14,0,0,0,0,0
-.size	.AES_encrypt,.-.AES_encrypt
 
 .globl	.AES_decrypt
 .align	7
@@ -821,7 +771,8 @@ Lenc_compact_done:
 	$STU	$sp,-$FRAME($sp)
 	mflr	r0
 
-	$PUSH	$out,`$FRAME-$SIZE_T*19`($sp)
+	$PUSH	$toc,`$FRAME-$SIZE_T*20`($sp)
+	$PUSH	r13,`$FRAME-$SIZE_T*19`($sp)
 	$PUSH	r14,`$FRAME-$SIZE_T*18`($sp)
 	$PUSH	r15,`$FRAME-$SIZE_T*17`($sp)
 	$PUSH	r16,`$FRAME-$SIZE_T*16`($sp)
@@ -848,61 +799,16 @@ Lenc_compact_done:
 	bne	Ldec_unaligned
 
 Ldec_unaligned_ok:
-___
-$code.=<<___ if (!$LITTLE_ENDIAN);
 	lwz	$s0,0($inp)
 	lwz	$s1,4($inp)
 	lwz	$s2,8($inp)
 	lwz	$s3,12($inp)
-___
-$code.=<<___ if ($LITTLE_ENDIAN);
-	lwz	$t0,0($inp)
-	lwz	$t1,4($inp)
-	lwz	$t2,8($inp)
-	lwz	$t3,12($inp)
-	rotlwi	$s0,$t0,8
-	rotlwi	$s1,$t1,8
-	rotlwi	$s2,$t2,8
-	rotlwi	$s3,$t3,8
-	rlwimi	$s0,$t0,24,0,7
-	rlwimi	$s1,$t1,24,0,7
-	rlwimi	$s2,$t2,24,0,7
-	rlwimi	$s3,$t3,24,0,7
-	rlwimi	$s0,$t0,24,16,23
-	rlwimi	$s1,$t1,24,16,23
-	rlwimi	$s2,$t2,24,16,23
-	rlwimi	$s3,$t3,24,16,23
-___
-$code.=<<___;
 	bl	LAES_Td
 	bl	Lppc_AES_decrypt_compact
-	$POP	$out,`$FRAME-$SIZE_T*19`($sp)
-___
-$code.=<<___ if ($LITTLE_ENDIAN);
-	rotlwi	$t0,$s0,8
-	rotlwi	$t1,$s1,8
-	rotlwi	$t2,$s2,8
-	rotlwi	$t3,$s3,8
-	rlwimi	$t0,$s0,24,0,7
-	rlwimi	$t1,$s1,24,0,7
-	rlwimi	$t2,$s2,24,0,7
-	rlwimi	$t3,$s3,24,0,7
-	rlwimi	$t0,$s0,24,16,23
-	rlwimi	$t1,$s1,24,16,23
-	rlwimi	$t2,$s2,24,16,23
-	rlwimi	$t3,$s3,24,16,23
-	stw	$t0,0($out)
-	stw	$t1,4($out)
-	stw	$t2,8($out)
-	stw	$t3,12($out)
-___
-$code.=<<___ if (!$LITTLE_ENDIAN);
 	stw	$s0,0($out)
 	stw	$s1,4($out)
 	stw	$s2,8($out)
 	stw	$s3,12($out)
-___
-$code.=<<___;
 	b	Ldec_done
 
 Ldec_unaligned:
@@ -945,7 +851,6 @@ Ldec_xpage:
 
 	bl	LAES_Td
 	bl	Lppc_AES_decrypt_compact
-	$POP	$out,`$FRAME-$SIZE_T*19`($sp)
 
 	extrwi	$acc00,$s0,8,0
 	extrwi	$acc01,$s0,8,8
@@ -978,6 +883,8 @@ Ldec_xpage:
 
 Ldec_done:
 	$POP	r0,`$FRAME+$LRSAVE`($sp)
+	$POP	$toc,`$FRAME-$SIZE_T*20`($sp)
+	$POP	r13,`$FRAME-$SIZE_T*19`($sp)
 	$POP	r14,`$FRAME-$SIZE_T*18`($sp)
 	$POP	r15,`$FRAME-$SIZE_T*17`($sp)
 	$POP	r16,`$FRAME-$SIZE_T*16`($sp)
@@ -1075,7 +982,7 @@ Ldec_loop:
 	xor	$s2,$t2,$acc14
 	xor	$s3,$t3,$acc15
 	addi	$key,$key,16
-	bdnz	Ldec_loop
+	bdnz-	Ldec_loop
 
 	addi	$Tbl2,$Tbl0,2048
 	nop
@@ -1448,7 +1355,6 @@ Ldec_compact_done:
 	blr
 	.long	0
 	.byte	0,12,0x14,0,0,0,0,0
-.size	.AES_decrypt,.-.AES_decrypt
 
 .asciz	"AES for PPC, CRYPTOGAMS by <appro\@openssl.org>"
 .align	7

@@ -1,11 +1,4 @@
-#! /usr/bin/env perl
-# Copyright 2005-2016 The OpenSSL Project Authors. All Rights Reserved.
-#
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
-
+#!/usr/bin/env perl
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
@@ -48,7 +41,7 @@ $0 =~ m/(.*[\/\\])[^\/\\]+$/; my $dir=$1; my $xlate;
 ( $xlate="${dir}../../perlasm/x86_64-xlate.pl" and -f $xlate) or
 die "can't locate x86_64-xlate.pl";
 
-open OUT,"| \"$^X\" \"$xlate\" $flavour \"$output\"";
+open OUT,"| \"$^X\" $xlate $flavour $output";
 *STDOUT=*OUT;
 
 sub L() { $code.=".byte	".join(',',@_)."\n"; }
@@ -98,44 +91,41 @@ for($i=0;$i<8;$i++) { $code.="mov @mm[$i],64+$i*8(%rsp)\n"; }	# S=L
 $code.=<<___;
 	xor	%rsi,%rsi
 	mov	%rsi,24(%rbx)		# zero round counter
-	jmp	.Lround
 .align	16
 .Lround:
 	mov	4096(%rbp,%rsi,8),@mm[0]	# rc[r]
 	mov	0(%rsp),%eax
 	mov	4(%rsp),%ebx
-	movz	%al,%ecx
-	movz	%ah,%edx
 ___
 for($i=0;$i<8;$i++) {
     my $func = ($i==0)? "mov" : "xor";
     $code.=<<___;
-	shr	\$16,%eax
+	mov	%al,%cl
+	mov	%ah,%dl
 	lea	(%rcx,%rcx),%rsi
-	movz	%al,%ecx
 	lea	(%rdx,%rdx),%rdi
-	movz	%ah,%edx
+	shr	\$16,%eax
 	xor	0(%rbp,%rsi,8),@mm[0]
 	$func	7(%rbp,%rdi,8),@mm[1]
+	mov	%al,%cl
+	mov	%ah,%dl
 	mov	$i*8+8(%rsp),%eax		# ($i+1)*8
 	lea	(%rcx,%rcx),%rsi
-	movz	%bl,%ecx
 	lea	(%rdx,%rdx),%rdi
-	movz	%bh,%edx
 	$func	6(%rbp,%rsi,8),@mm[2]
 	$func	5(%rbp,%rdi,8),@mm[3]
-	shr	\$16,%ebx
+	mov	%bl,%cl
+	mov	%bh,%dl
 	lea	(%rcx,%rcx),%rsi
-	movz	%bl,%ecx
 	lea	(%rdx,%rdx),%rdi
-	movz	%bh,%edx
+	shr	\$16,%ebx
 	$func	4(%rbp,%rsi,8),@mm[4]
 	$func	3(%rbp,%rdi,8),@mm[5]
+	mov	%bl,%cl
+	mov	%bh,%dl
 	mov	$i*8+8+4(%rsp),%ebx		# ($i+1)*8+4
 	lea	(%rcx,%rcx),%rsi
-	movz	%al,%ecx
 	lea	(%rdx,%rdx),%rdi
-	movz	%ah,%edx
 	$func	2(%rbp,%rsi,8),@mm[6]
 	$func	1(%rbp,%rdi,8),@mm[7]
 ___
@@ -144,32 +134,32 @@ ___
 for($i=0;$i<8;$i++) { $code.="mov @mm[$i],$i*8(%rsp)\n"; }	# K=L
 for($i=0;$i<8;$i++) {
     $code.=<<___;
-	shr	\$16,%eax
+	mov	%al,%cl
+	mov	%ah,%dl
 	lea	(%rcx,%rcx),%rsi
-	movz	%al,%ecx
 	lea	(%rdx,%rdx),%rdi
-	movz	%ah,%edx
+	shr	\$16,%eax
 	xor	0(%rbp,%rsi,8),@mm[0]
 	xor	7(%rbp,%rdi,8),@mm[1]
+	mov	%al,%cl
+	mov	%ah,%dl
 	`"mov	64+$i*8+8(%rsp),%eax"	if($i<7);`	# 64+($i+1)*8
 	lea	(%rcx,%rcx),%rsi
-	movz	%bl,%ecx
 	lea	(%rdx,%rdx),%rdi
-	movz	%bh,%edx
 	xor	6(%rbp,%rsi,8),@mm[2]
 	xor	5(%rbp,%rdi,8),@mm[3]
-	shr	\$16,%ebx
+	mov	%bl,%cl
+	mov	%bh,%dl
 	lea	(%rcx,%rcx),%rsi
-	movz	%bl,%ecx
 	lea	(%rdx,%rdx),%rdi
-	movz	%bh,%edx
+	shr	\$16,%ebx
 	xor	4(%rbp,%rsi,8),@mm[4]
 	xor	3(%rbp,%rdi,8),@mm[5]
+	mov	%bl,%cl
+	mov	%bh,%dl
 	`"mov	64+$i*8+8+4(%rsp),%ebx"	if($i<7);`	# 64+($i+1)*8+4
 	lea	(%rcx,%rcx),%rsi
-	movz	%al,%ecx
 	lea	(%rdx,%rdx),%rdi
-	movz	%ah,%edx
 	xor	2(%rbp,%rsi,8),@mm[6]
 	xor	1(%rbp,%rdi,8),@mm[7]
 ___

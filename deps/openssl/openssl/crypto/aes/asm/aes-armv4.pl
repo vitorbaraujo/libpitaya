@@ -1,14 +1,7 @@
-#! /usr/bin/env perl
-# Copyright 2007-2018 The OpenSSL Project Authors. All Rights Reserved.
-#
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
-
+#!/usr/bin/env perl
 
 # ====================================================================
-# Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
+# Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
 # project. The module is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
@@ -39,20 +32,8 @@
 # Profiler-assisted and platform-specific optimization resulted in 16%
 # improvement on Cortex A8 core and ~21.5 cycles per byte.
 
-$flavour = shift;
-if ($flavour=~/\w[\w\-]*\.\w+$/) { $output=$flavour; undef $flavour; }
-else { while (($output=shift) && ($output!~/\w[\w\-]*\.\w+$/)) {} }
-
-if ($flavour && $flavour ne "void") {
-    $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
-    ( $xlate="${dir}arm-xlate.pl" and -f $xlate ) or
-    ( $xlate="${dir}../../perlasm/arm-xlate.pl" and -f $xlate) or
-    die "can't locate arm-xlate.pl";
-
-    open STDOUT,"| \"$^X\" $xlate $flavour $output";
-} else {
-    open STDOUT,">$output";
-}
+while (($output=shift) && ($output!~/^\w[\w\-]*\.\w+$/)) {}
+open STDOUT,">$output";
 
 $s0="r0";
 $s1="r1";
@@ -70,20 +51,9 @@ $key="r11";
 $rounds="r12";
 
 $code=<<___;
-#ifndef __KERNEL__
-# include "arm_arch.h"
-#else
-# define __ARM_ARCH__ __LINUX_ARM_ARCH__
-#endif
-
+#include "arm_arch.h"
 .text
-#if defined(__thumb2__) && !defined(__APPLE__)
-.syntax	unified
-.thumb
-#else
 .code	32
-#undef __thumb2__
-#endif
 
 .type	AES_Te,%object
 .align	5
@@ -197,19 +167,11 @@ AES_Te:
 .type   AES_encrypt,%function
 .align	5
 AES_encrypt:
-#ifndef	__thumb2__
 	sub	r3,pc,#8		@ AES_encrypt
-#else
-	adr	r3,.
-#endif
 	stmdb   sp!,{r1,r4-r12,lr}
-#if defined(__thumb2__) || defined(__APPLE__)
-	adr	$tbl,AES_Te
-#else
-	sub	$tbl,r3,#AES_encrypt-AES_Te	@ Te
-#endif
 	mov	$rounds,r0		@ inp
 	mov	$key,r2
+	sub	$tbl,r3,#AES_encrypt-AES_Te	@ Te
 #if __ARM_ARCH__<7
 	ldrb	$s0,[$rounds,#3]	@ load input data in endian-neutral
 	ldrb	$t1,[$rounds,#2]	@ manner...
@@ -442,26 +404,16 @@ _armv4_AES_encrypt:
 	ldr	pc,[sp],#4		@ pop and return
 .size	_armv4_AES_encrypt,.-_armv4_AES_encrypt
 
-.global AES_set_encrypt_key
-.type   AES_set_encrypt_key,%function
+.global private_AES_set_encrypt_key
+.type   private_AES_set_encrypt_key,%function
 .align	5
-AES_set_encrypt_key:
+private_AES_set_encrypt_key:
 _armv4_AES_set_encrypt_key:
-#ifndef	__thumb2__
 	sub	r3,pc,#8		@ AES_set_encrypt_key
-#else
-	adr	r3,.
-#endif
 	teq	r0,#0
-#ifdef	__thumb2__
-	itt	eq			@ Thumb2 thing, sanity check in ARM
-#endif
 	moveq	r0,#-1
 	beq	.Labrt
 	teq	r2,#0
-#ifdef	__thumb2__
-	itt	eq			@ Thumb2 thing, sanity check in ARM
-#endif
 	moveq	r0,#-1
 	beq	.Labrt
 
@@ -470,22 +422,15 @@ _armv4_AES_set_encrypt_key:
 	teq	r1,#192
 	beq	.Lok
 	teq	r1,#256
-#ifdef	__thumb2__
-	itt	ne			@ Thumb2 thing, sanity check in ARM
-#endif
 	movne	r0,#-1
 	bne	.Labrt
 
 .Lok:	stmdb   sp!,{r4-r12,lr}
+	sub	$tbl,r3,#_armv4_AES_set_encrypt_key-AES_Te-1024	@ Te4
+
 	mov	$rounds,r0		@ inp
 	mov	lr,r1			@ bits
 	mov	$key,r2			@ key
-
-#if defined(__thumb2__) || defined(__APPLE__)
-	adr	$tbl,AES_Te+1024				@ Te4
-#else
-	sub	$tbl,r3,#_armv4_AES_set_encrypt_key-AES_Te-1024	@ Te4
-#endif
 
 #if __ARM_ARCH__<7
 	ldrb	$s0,[$rounds,#3]	@ load input data in endian-neutral
@@ -631,9 +576,6 @@ _armv4_AES_set_encrypt_key:
 	str	$s2,[$key,#-16]
 	subs	$rounds,$rounds,#1
 	str	$s3,[$key,#-12]
-#ifdef	__thumb2__
-	itt	eq				@ Thumb2 thing, sanity check in ARM
-#endif
 	subeq	r2,$key,#216
 	beq	.Ldone
 
@@ -703,9 +645,6 @@ _armv4_AES_set_encrypt_key:
 	str	$s2,[$key,#-24]
 	subs	$rounds,$rounds,#1
 	str	$s3,[$key,#-20]
-#ifdef	__thumb2__
-	itt	eq				@ Thumb2 thing, sanity check in ARM
-#endif
 	subeq	r2,$key,#256
 	beq	.Ldone
 
@@ -735,77 +674,48 @@ _armv4_AES_set_encrypt_key:
 	str	$i3,[$key,#-4]
 	b	.L256_loop
 
-.align	2
 .Ldone:	mov	r0,#0
 	ldmia   sp!,{r4-r12,lr}
-.Labrt:
-#if __ARM_ARCH__>=5
-	ret				@ bx lr
-#else
-	tst	lr,#1
+.Labrt:	tst	lr,#1
 	moveq	pc,lr			@ be binary compatible with V4, yet
 	bx	lr			@ interoperable with Thumb ISA:-)
-#endif
-.size	AES_set_encrypt_key,.-AES_set_encrypt_key
+.size	private_AES_set_encrypt_key,.-private_AES_set_encrypt_key
 
-.global AES_set_decrypt_key
-.type   AES_set_decrypt_key,%function
+.global private_AES_set_decrypt_key
+.type   private_AES_set_decrypt_key,%function
 .align	5
-AES_set_decrypt_key:
+private_AES_set_decrypt_key:
 	str	lr,[sp,#-4]!            @ push lr
 	bl	_armv4_AES_set_encrypt_key
 	teq	r0,#0
-	ldr	lr,[sp],#4              @ pop lr
+	ldrne	lr,[sp],#4              @ pop lr
 	bne	.Labrt
 
-	mov	r0,r2			@ AES_set_encrypt_key preserves r2,
-	mov	r1,r2			@ which is AES_KEY *key
-	b	_armv4_AES_set_enc2dec_key
-.size	AES_set_decrypt_key,.-AES_set_decrypt_key
+	stmdb   sp!,{r4-r12}
 
-@ void AES_set_enc2dec_key(const AES_KEY *inp,AES_KEY *out)
-.global	AES_set_enc2dec_key
-.type	AES_set_enc2dec_key,%function
-.align	5
-AES_set_enc2dec_key:
-_armv4_AES_set_enc2dec_key:
-	stmdb   sp!,{r4-r12,lr}
+	ldr	$rounds,[r2,#240]	@ AES_set_encrypt_key preserves r2,
+	mov	$key,r2			@ which is AES_KEY *key
+	mov	$i1,r2
+	add	$i2,r2,$rounds,lsl#4
 
-	ldr	$rounds,[r0,#240]
-	mov	$i1,r0			@ input
-	add	$i2,r0,$rounds,lsl#4
-	mov	$key,r1			@ output
-	add	$tbl,r1,$rounds,lsl#4
-	str	$rounds,[r1,#240]
-
-.Linv:	ldr	$s0,[$i1],#16
-	ldr	$s1,[$i1,#-12]
-	ldr	$s2,[$i1,#-8]
-	ldr	$s3,[$i1,#-4]
-	ldr	$t1,[$i2],#-16
-	ldr	$t2,[$i2,#16+4]
-	ldr	$t3,[$i2,#16+8]
-	ldr	$i3,[$i2,#16+12]
-	str	$s0,[$tbl],#-16
-	str	$s1,[$tbl,#16+4]
-	str	$s2,[$tbl,#16+8]
-	str	$s3,[$tbl,#16+12]
-	str	$t1,[$key],#16
-	str	$t2,[$key,#-12]
-	str	$t3,[$key,#-8]
-	str	$i3,[$key,#-4]
-	teq	$i1,$i2
-	bne	.Linv
-
-	ldr	$s0,[$i1]
+.Linv:	ldr	$s0,[$i1]
 	ldr	$s1,[$i1,#4]
 	ldr	$s2,[$i1,#8]
 	ldr	$s3,[$i1,#12]
-	str	$s0,[$key]
-	str	$s1,[$key,#4]
-	str	$s2,[$key,#8]
-	str	$s3,[$key,#12]
-	sub	$key,$key,$rounds,lsl#3
+	ldr	$t1,[$i2]
+	ldr	$t2,[$i2,#4]
+	ldr	$t3,[$i2,#8]
+	ldr	$i3,[$i2,#12]
+	str	$s0,[$i2],#-16
+	str	$s1,[$i2,#16+4]
+	str	$s2,[$i2,#16+8]
+	str	$s3,[$i2,#16+12]
+	str	$t1,[$i1],#16
+	str	$t2,[$i1,#-12]
+	str	$t3,[$i1,#-8]
+	str	$i3,[$i1,#-4]
+	teq	$i1,$i2
+	bne	.Linv
 ___
 $mask80=$i1;
 $mask1b=$i2;
@@ -863,7 +773,7 @@ $code.=<<___;
 	moveq	pc,lr			@ be binary compatible with V4, yet
 	bx	lr			@ interoperable with Thumb ISA:-)
 #endif
-.size	AES_set_enc2dec_key,.-AES_set_enc2dec_key
+.size	private_AES_set_decrypt_key,.-private_AES_set_decrypt_key
 
 .type	AES_Td,%object
 .align	5
@@ -973,19 +883,11 @@ AES_Td:
 .type   AES_decrypt,%function
 .align	5
 AES_decrypt:
-#ifndef	__thumb2__
 	sub	r3,pc,#8		@ AES_decrypt
-#else
-	adr	r3,.
-#endif
 	stmdb   sp!,{r1,r4-r12,lr}
-#if defined(__thumb2__) || defined(__APPLE__)
-	adr	$tbl,AES_Td
-#else
-	sub	$tbl,r3,#AES_decrypt-AES_Td	@ Td
-#endif
 	mov	$rounds,r0		@ inp
 	mov	$key,r2
+	sub	$tbl,r3,#AES_decrypt-AES_Td		@ Td
 #if __ARM_ARCH__<7
 	ldrb	$s0,[$rounds,#3]	@ load input data in endian-neutral
 	ldrb	$t1,[$rounds,#2]	@ manner...
@@ -1178,9 +1080,8 @@ _armv4_AES_decrypt:
 	ldrb	$t3,[$tbl,$i3]		@ Td4[s0>>0]
 	and	$i3,lr,$s1,lsr#8
 
-	add	$s1,$tbl,$s1,lsr#24
 	ldrb	$i1,[$tbl,$i1]		@ Td4[s1>>0]
-	ldrb	$s1,[$s1]		@ Td4[s1>>24]
+	ldrb	$s1,[$tbl,$s1,lsr#24]	@ Td4[s1>>24]
 	ldrb	$i2,[$tbl,$i2]		@ Td4[s1>>16]
 	eor	$s0,$i1,$s0,lsl#24
 	ldrb	$i3,[$tbl,$i3]		@ Td4[s1>>8]
@@ -1193,8 +1094,7 @@ _armv4_AES_decrypt:
 	ldrb	$i2,[$tbl,$i2]		@ Td4[s2>>0]
 	and	$i3,lr,$s2,lsr#16
 
-	add	$s2,$tbl,$s2,lsr#24
-	ldrb	$s2,[$s2]		@ Td4[s2>>24]
+	ldrb	$s2,[$tbl,$s2,lsr#24]	@ Td4[s2>>24]
 	eor	$s0,$s0,$i1,lsl#8
 	ldrb	$i3,[$tbl,$i3]		@ Td4[s2>>16]
 	eor	$s1,$i2,$s1,lsl#16
@@ -1206,9 +1106,8 @@ _armv4_AES_decrypt:
 	ldrb	$i2,[$tbl,$i2]		@ Td4[s3>>8]
 	and	$i3,lr,$s3		@ i2
 
-	add	$s3,$tbl,$s3,lsr#24
 	ldrb	$i3,[$tbl,$i3]		@ Td4[s3>>0]
-	ldrb	$s3,[$s3]		@ Td4[s3>>24]
+	ldrb	$s3,[$tbl,$s3,lsr#24]	@ Td4[s3>>24]
 	eor	$s0,$s0,$i1,lsl#16
 	ldr	$i1,[$key,#0]
 	eor	$s1,$s1,$i2,lsl#8
@@ -1231,15 +1130,5 @@ _armv4_AES_decrypt:
 ___
 
 $code =~ s/\bbx\s+lr\b/.word\t0xe12fff1e/gm;	# make it possible to compile with -march=armv4
-$code =~ s/\bret\b/bx\tlr/gm;
-
-open SELF,$0;
-while(<SELF>) {
-	next if (/^#!/);
-	last if (!s/^#/@/ and !/^$/);
-	print;
-}
-close SELF;
-
 print $code;
 close STDOUT;	# enforce flush

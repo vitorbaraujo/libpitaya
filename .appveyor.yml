@@ -43,7 +43,6 @@ before_build:
   #- perl ..\Configure VC-WIN64A no-asm
   #- nmake
   #- nmake install
-
   - cd C:\projects\libpitaya
   - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=true -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
 

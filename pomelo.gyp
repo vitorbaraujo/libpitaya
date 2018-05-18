@@ -96,15 +96,26 @@
                 './deps/openssl/openssl/include',
               ]
             }, {
+              'conditions': [
+                [ 'OS=="win"', {
+                  'libraries': [
+                    '-lC:/OpenSSL-Win64/lib/libeay32.lib',
+                  ],
+                  'include_dirs': [
+                    'C:/OpenSSL-Win64/include',
+                  ],
+                }, {
+                  'include_dirs': [
+                    './deps/openssl/openssl/include',
+                  ],
+                }],
+              ]
               'link_settings': {
                 'libraries': [
                   '-lssl',
                   '-lcrypto',
                 ]
               }
-              'include_dirs': [
-                './deps/openssl/openssl/include',
-              ],
             }], # use_sys_openssl
           ],
         }],  # no tls support

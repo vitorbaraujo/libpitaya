@@ -109,7 +109,7 @@
                     './deps/openssl/openssl/include',
                   ],
                 }],
-              ]
+              ],
               'link_settings': {
                 'libraries': [
                   '-lssl',

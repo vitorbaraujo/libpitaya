@@ -17,13 +17,6 @@
             'cflags': [ '-pthread' ],
           }],
         ],
-      }, {
-        'default_configuration': 'Release_x64',
-        'configurations': {
-          'Release_x64': {
-            'msvs_configuration_platform': 'x64',
-          },
-        },
       }],
     ],
     'xcode_settings': {

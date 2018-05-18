@@ -1077,6 +1077,12 @@
           'WIN32_LEAN_AND_MEAN',
           'OPENSSL_SYSNAME_WIN32',
         ],
+        'default_configuration': 'Release_x64',
+        'configurations': {
+          'Release_x64': {
+            'msvs_configuration_platform': 'x64',
+          },
+        },
       }, {
         'defines': [
           # ENGINESDIR must be defined if OPENSSLDIR is.

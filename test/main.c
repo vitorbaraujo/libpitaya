@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <pomelo.h>
 #include "test_common.h"
-#include "main.h"
 
 #define NUM_SUITES 9
 

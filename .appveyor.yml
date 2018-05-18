@@ -45,7 +45,7 @@ deploy:
   draft: true
   auth_token:
     secure: "zZylescCEij0QU44MySw8xIQgBjmRJfD/p/42ddQQoxLoFzC4TP+kkZm3ywsrKo6"
-  artifact: /.*\.dll(\.lib)?/
+  artifact: /.*\.dll|.*\.lib/
   on:
     appveyor_repo_tag: true
 

@@ -243,52 +243,52 @@
           ],
         }],
       }],
-    #   ['build_cspomelo == "true"', {
-    #     'conditions': [
-    #       ['build_for_linux == "true" or build_for_mac == "true" or build_for_windows == "true"', {
-    #         'targets':[ {
-    #           'target_name': 'pitaya_unity',
-    #           'type': 'shared_library',
-    #           'dependencies': [
-    #             'pitaya',
-    #           ],
-    #           'conditions': [
-    #             ['OS!="win"', {
-    #               'cflags': ['-fPIC'],
-    #             }],
-    #             ['build_for_mac == "true"', {
-    #               'product_extension': 'bundle',
-    #             }],
-    #           ],
-    #           'include_dirs': [
-    #             './include/',
-    #           ],
-    #           'sources': [
-    #             './cs/contrib/cspomelo.c',
-    #           ],
-    #         }],
-    #       }],
-    #       ['build_for_ios == "true"', {
-    #         'targets':[ {
-    #           'target_name': 'pitaya_unity_ios',
-    #           'type': 'static_library',
-    #           'dependencies': [
-    #             'pitaya',
-    #           ],
-    #           'conditions': [
-    #             ['OS!="win"', {
-    #               'cflags': ['-fPIC'],
-    #             }],
-    #           ],
-    #           'include_dirs': [
-    #             './include/',
-    #           ],
-    #           'sources': [
-    #             './cs/contrib/cspomelo.c',
-    #           ],
-    #         }],
-    #       }],
-    #     ]
-    # }],
+      ['build_cspomelo == "true"', {
+        'conditions': [
+          ['build_for_linux == "true" or build_for_mac == "true" or build_for_windows == "true"', {
+            'targets':[ {
+              'target_name': 'pitaya_unity',
+              'type': 'shared_library',
+              'dependencies': [
+                'pitaya',
+              ],
+              'conditions': [
+                ['OS!="win"', {
+                  'cflags': ['-fPIC'],
+                }],
+                ['build_for_mac == "true"', {
+                  'product_extension': 'bundle',
+                }],
+              ],
+              'include_dirs': [
+                './include/',
+              ],
+              'sources': [
+                './cs/contrib/cspomelo.c',
+              ],
+            }],
+          }],
+          ['build_for_ios == "true"', {
+            'targets':[ {
+              'target_name': 'pitaya_unity_ios',
+              'type': 'static_library',
+              'dependencies': [
+                'pitaya',
+              ],
+              'conditions': [
+                ['OS!="win"', {
+                  'cflags': ['-fPIC'],
+                }],
+              ],
+              'include_dirs': [
+                './include/',
+              ],
+              'sources': [
+                './cs/contrib/cspomelo.c',
+              ],
+            }],
+          }],
+        ]
+    }],
   ],
 }

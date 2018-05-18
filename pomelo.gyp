@@ -30,7 +30,13 @@
           'msvs_settings': {
             'VCCLCompilerTool': {
               #'AdditionalOptions': [ '/TP' ],
-            }
+            },
+            'default_configuration': 'Release_x64',
+            'configurations': {
+              'Release_x64': {
+                'msvs_configuration_platform': 'x64',
+              },
+            },
           },
           'defines': [
             '_WIN32',

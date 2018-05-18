@@ -37,7 +37,7 @@
       'conditions': [
         ['OS != "win"', {
           'cflags': [
-            '-fPic',
+            '-fPIC',
           ],
         }],
       ],

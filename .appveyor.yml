@@ -13,7 +13,8 @@ environment:
       backend: ninja
 
 install:
-  - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64'
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+
   ############################################################################
   # Install Ninja
   ############################################################################

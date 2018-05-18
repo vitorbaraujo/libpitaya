@@ -24,19 +24,20 @@
       'direct_dependent_settings': {
         'include_dirs': [ 'openssl/include']
       }
-    }, {
-      # openssl-cli target
-      'target_name': 'openssl-cli',
-      'type': 'executable',
-      'dependencies': ['openssl'],
-      'includes': ['./openssl_common.gypi'],
-      'conditions': [
-        ['openssl_no_asm==0', {
-          'includes': ['./openssl-cl_asm.gypi'],
-        }, {
-          'includes': ['./openssl-cl_no_asm.gypi'],
-        }],
-      ],
     },
+    # {
+    #   # openssl-cli target
+    #   'target_name': 'openssl-cli',
+    #   'type': 'executable',
+    #   'dependencies': ['openssl'],
+    #   'includes': ['./openssl_common.gypi'],
+    #   'conditions': [
+    #     ['openssl_no_asm==0', {
+    #       'includes': ['./openssl-cl_asm.gypi'],
+    #     }, {
+    #       'includes': ['./openssl-cl_no_asm.gypi'],
+    #     }],
+    #   ],
+    # },
   ],
 }

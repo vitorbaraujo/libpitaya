@@ -34,9 +34,9 @@
             },
           },
           'msvs_settings': {
-            'VCCLCompilerTool': {
-              'AdditionalOptions': [ '/TP' ],
-            }
+            # 'VCCLCompilerTool': {
+            #   'AdditionalOptions': [ '/TP' ],
+            # }
           },
           'defines': [
             '_WIN32',

@@ -20,6 +20,12 @@
         'ENGINESDIR="/dev/null"',
       ],
     }, 'OS=="win"', {
+      'default_configuration': 'Release_x64',
+      'configurations': {
+        'Release_x64': {
+            'msvs_configuration_platform': 'x64',
+        },
+      },
       'defines': [
         ## default of Win. See INSTALL in openssl repo.
         'OPENSSLDIR="C:\Program Files\Common Files\SSL"',

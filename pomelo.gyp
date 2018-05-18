@@ -108,14 +108,14 @@
                   'include_dirs': [
                     './deps/openssl/openssl/include',
                   ],
+                  'link_settings': {
+                    'libraries': [
+                      '-lssl',
+                      '-lcrypto',
+                    ],
+                  },
                 }],
               ],
-              'link_settings': {
-                'libraries': [
-                  '-lssl',
-                  '-lcrypto',
-                ]
-              }
             }], # use_sys_openssl
           ],
         }],  # no tls support

@@ -102,6 +102,9 @@
                   '-lcrypto',
                 ]
               }
+              'include_dirs': [
+                './deps/openssl/openssl/include',
+              ],
             }], # use_sys_openssl
           ],
         }],  # no tls support

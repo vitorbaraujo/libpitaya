@@ -22,7 +22,7 @@ MOCK_DESTROY_SOCKET_SERVER=mock-destroy-socket-server.js
 MOCK_DESTROY_SOCKET_SERVER_LOG_FILE=mock-destroy-socket-server-out.log
 
 BUILD_DIR=build
-OUTPUT_DIR=$BUILD_DIR/out/Default/output
+OUTPUT_DIR=$BUILD_DIR/out/Default
 
 TESTS_EXE=tests
 

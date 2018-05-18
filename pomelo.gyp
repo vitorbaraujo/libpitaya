@@ -176,16 +176,8 @@
         'dependencies': [
           'pitaya',
         ],
-        'conditions': [
-          ['build_for_windows == "true" or build_for_linux == "true"', {
-            'libraries': [
-              'pitaya.lib',
-            ],
-          }, {
-            'dependencies': [
-              'pitaya',
-            ],
-          }]
+        'libraries': [
+          '-lpitaya',
         ],
         'include_dirs': [
           './include/',

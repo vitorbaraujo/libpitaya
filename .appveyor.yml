@@ -17,6 +17,8 @@ install:
   # Install Ninja
   ############################################################################
   - choco install ninja
+  - choco install strawberryperl
+  - choco install nasm
 
   ############################################################################
   # Install GYP
@@ -29,12 +31,15 @@ install:
   - python setup.py install
 
 before_build:
-  - dir C:\OpenSSL-Win64
-  - dir C:\OpenSSL-Win64\lib
-  - dir C:\OpenSSL-Win64\include
-  - dir C:\OpenSSL-Win64\include\openssl
+  - cd C:\projects\libpitaya\deps\openssl\openssl
+  - mkdir _build
+  - cd _build
+  - perl ..\Configure VC-WIN64A no-asm
+  - nmake
+  - nmake install
+
   - cd C:\projects\libpitaya
-  - gyp --depth=. pomelo.gyp -Duse_sys_openssl=false -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
+  - gyp --depth=. pomelo.gyp -Duse_sys_openssl=true -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
 
 build_script:
     #- cd build/out/Default

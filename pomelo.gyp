@@ -99,7 +99,8 @@
               'conditions': [
                 [ 'OS=="win"', {
                   'libraries': [
-                    '-lC:/OpenSSL-Win64/lib/libeay32.lib',
+                    '-lC:/OpenSSL-Win64/libeay32.lib',
+                    '-lC:/OpenSSL-Win64/libssl32.lib',
                   ],
                   'include_dirs': [
                     'C:/OpenSSL-Win64/include',

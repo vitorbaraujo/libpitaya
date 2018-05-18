@@ -24,7 +24,7 @@ extern "C" {
 #endif
 
 #define PC_MAJOR_VERSION 0
-#define PC_MINOR_VERSION 3 
+#define PC_MINOR_VERSION 3
 #define PC_REVISION 5
 #define PC_VERSION_SUFFIX "release"
 
@@ -80,7 +80,7 @@ typedef struct pc_notify_s pc_notify_t;
  * some tunable arguments
  */
 #define PC_TRANSPORT_PLUGIN_SLOT_COUNT 8
-#define PC_PRE_ALLOC_REQUEST_SLOT_COUNT 4 
+#define PC_PRE_ALLOC_REQUEST_SLOT_COUNT 4
 #define PC_PRE_ALLOC_NOTIFY_SLOT_COUNT 4
 #define PC_TIMEOUT_CHECK_INTERVAL 2
 #define PC_HEARTBEAT_TIMEOUT_FACTOR 2
@@ -96,14 +96,14 @@ typedef struct pc_notify_s pc_notify_t;
 /**
  * reconnect max retry
  */
-#define PC_ALWAYS_RETRY -1 
+#define PC_ALWAYS_RETRY -1
 
 /**
  * disable timeout
  */
 #define PC_WITHOUT_TIMEOUT -1
 
-typedef enum { 
+typedef enum {
     PC_LOCAL_STORAGE_OP_READ = 0,
     PC_LOCAL_STORAGE_OP_WRITE = 1,
 } pc_local_storage_op_t;
@@ -125,7 +125,7 @@ typedef struct {
     void* ls_ex_data;
 
     int transport_name;
-    
+
     int disable_compression;
 } pc_client_config_t;
 
@@ -264,8 +264,8 @@ typedef void (*pc_notify_error_cb_t)(const pc_notify_t* req, pc_error_t error);
 /**
  * pc_notify_t getters.
  *
- * All the getters should be called in pc_notify_cb_t to access read-only 
- * properties of the current pc_notify_t. 
+ * All the getters should be called in pc_notify_cb_t to access read-only
+ * properties of the current pc_notify_t.
  *
  * User should not hold any references to pc_notify_t.
  */
@@ -299,7 +299,7 @@ PC_EXPORT const char* pc_client_rc_str(int rc);
  * Returns `PC_RC_OK` in case of success otherwise `PC_RC_ERROR`. For more information, see
  * https://www.openssl.org/docs/man1.0.2/ssl/SSL_CTX_load_verify_locations.html
  */
-int tr_uv_tls_set_ca_file(const char* ca_file, const char* ca_path);
+PC_EXPORT int tr_uv_tls_set_ca_file(const char* ca_file, const char* ca_path);
 
 #endif /* uv_tls */
 
@@ -307,7 +307,7 @@ int tr_uv_tls_set_ca_file(const char* ca_file, const char* ca_path);
  * Macro implementation
  */
 #define pc_lib_version() PC_VERSION_NUM
-#define pc_lib_version_str() PC_VERSION_STR 
+#define pc_lib_version_str() PC_VERSION_STR
 
 #ifdef __cplusplus
 }

@@ -99,8 +99,8 @@
               'conditions': [
                 [ 'OS=="win"', {
                   'libraries': [
-                    '-lC:/OpenSSL-Win64/libeay32.lib',
-                    '-lC:/OpenSSL-Win64/libssl32.lib',
+                    '-lC:/OpenSSL-Win64/libeay32.dll',
+                    '-lC:/OpenSSL-Win64/libssl32.dll',
                   ],
                   'include_dirs': [
                     'C:/OpenSSL-Win64/include',
@@ -155,9 +155,9 @@
           }],
           ['build_for_mac == "true" or build_for_ios == "true"', {
             'type': 'static_library',
-            'defines': ['BUILDING_PC_SHARED=1'],
           }, {
             'type': 'shared_library',
+            'defines': ['BUILDING_PC_SHARED=1'],
           }],
           ['no_uv_support == "false"', {
             'sources': [
@@ -190,9 +190,6 @@
         'type': 'executable',
         'dependencies': [
           'pitaya',
-        ],
-        'libraries': [
-          '-lpitaya',
         ],
         'include_dirs': [
           './include/',

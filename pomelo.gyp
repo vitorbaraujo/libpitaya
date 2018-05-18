@@ -22,6 +22,15 @@
   },
 
     'target_defaults': {
+      'default_configuration': 'Release_x64',
+      'configurations': {
+        'Debug_x64': {
+          'msvs_configuration_platform': 'x64',
+        },
+        'Release_x64': {
+          'msvs_configuration_platform': 'x64',
+        },
+      },
       'dependencies': [
         './deps/zlib/zlib.gyp:zlib',
       ],
@@ -30,12 +39,6 @@
           'msvs_settings': {
             'VCCLCompilerTool': {
               #'AdditionalOptions': [ '/TP' ],
-            },
-            'default_configuration': 'Release_x64',
-            'configurations': {
-              'Release_x64': {
-                'msvs_configuration_platform': 'x64',
-              },
             },
           },
           'defines': [

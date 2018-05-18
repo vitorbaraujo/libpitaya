@@ -1,4 +1,4 @@
-image: Visual Studio 2017
+image: Visual Studio 2015
 
 build:
   verbosity: detailed
@@ -14,13 +14,12 @@ on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  #- call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 
   ############################################################################
   # Install Ninja
   ############################################################################
   - choco install ninja
-  #- choco install strawberryperl
   #- choco install nasm
 
   ############################################################################

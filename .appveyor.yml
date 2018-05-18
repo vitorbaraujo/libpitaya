@@ -21,7 +21,7 @@ install:
   ############################################################################
   # Install Ninja
   ############################################################################
-  #- choco install ninja
+  - choco install ninja
   #- choco install strawberryperl
   #- choco install nasm
 
@@ -44,7 +44,7 @@ before_build:
   #- nmake install
 
   - cd C:\projects\libpitaya
-  - gyp --depth=. pomelo.gyp -Duse_sys_openssl=true -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
+  - gyp --depth=. pomelo.gyp --generator-output=build -Duse_sys_openssl=true -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
 
 build_script:
     #- cd build/out/Default
@@ -52,8 +52,8 @@ build_script:
     #- ninja
     #- dir
   - dir
+  - cd build
   - msbuild pomelo.sln
   # - cat libpitaya.vcxproj
   # - msbuild pomelo.sln /t:Build /p:Configuration=Release /p:Platform=Win32
-    #- cd build/out/Default
     #- ninja

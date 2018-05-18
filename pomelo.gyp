@@ -34,9 +34,9 @@
             },
           },
           'msvs_settings': {
-            # 'VCCLCompilerTool': {
-            #   'AdditionalOptions': [ '/TP' ],
-            # }
+            'VCCLCompilerTool': {
+              'AdditionalOptions': [ '/TP' ],
+            }
           },
           'defines': [
             '_WIN32',
@@ -99,8 +99,8 @@
               'conditions': [
                 [ 'OS=="win"', {
                   'libraries': [
-                    '-lC:/OpenSSL-Win64/libeay32.dll',
-                    '-lC:/OpenSSL-Win64/libssl32.dll',
+                    '-lC:/OpenSSL-Win64/lib/libeay32.lib',
+                    '-lC:/OpenSSL-Win64/lib/ssleay32.lib',
                   ],
                   'include_dirs': [
                     'C:/OpenSSL-Win64/include',

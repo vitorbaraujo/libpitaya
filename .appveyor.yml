@@ -8,10 +8,10 @@ configuration: Release
 platform: x64
 
 artifacts:
-  - path: build\out\Release_x64\*.dll
+  - path: build\out\Release_x64\output\*.dll
     name: Dlls
 
-  - path: build\out\Release_x64\*.lib
+  - path: build\out\Release_x64\output\*.lib
     name: Libs
 
 environment:
@@ -45,6 +45,9 @@ before_build:
 build_script:
   - cd build\out\Release_x64
   - ninja
+
+after_build:
+  - dir build\out\Release_x64\output
 
 deploy:
   description: 'Naice Release'

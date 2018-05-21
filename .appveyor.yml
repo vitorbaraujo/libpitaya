@@ -7,11 +7,18 @@ configuration: Release
 
 platform: x64
 
+artifacts:
+  - path: build\out\Release_x64\*.dll
+    name: Dlls
+
+  - path: build\out\Release_x64\*.lib
+    name: Libs
+
 environment:
   nodejs_version: "Current"
 
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  #on_finish:
+  #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
   #- call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -36,7 +43,7 @@ before_build:
   - gyp --depth=. pomelo.gyp -f ninja --generator-output=build -Duse_sys_openssl=true -Dbuild_type=Release -Dbuild_cspomelo=true -Dbuild_for_windows=true
 
 build_script:
-  - cd build\out\Release_x64\output
+  - cd build\out\Release_x64
   - ninja
 
 deploy:

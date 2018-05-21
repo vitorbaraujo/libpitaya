@@ -47,7 +47,7 @@ build_script:
   - ninja
 
 after_build:
-  - dir build\out\Release_x64\output
+  - dir output
 
 deploy:
   description: 'Naice Release'

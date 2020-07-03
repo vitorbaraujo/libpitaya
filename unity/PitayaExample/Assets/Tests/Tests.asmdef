@@ -1,9 +1,7 @@
 {
     "name": "Tests",
     "references": [
-        "Pitaya",
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "Pitaya"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
